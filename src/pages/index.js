@@ -1,5 +1,8 @@
-import Head from 'next/head'
-import Link from 'next/link'
+import Footer from "@/components/footer";
+import GradientButton from "@/components/gradient-button";
+import Head from "next/head";
+import Image from "next/image";
+import Link from "next/link";
 
 function BackgroundVideo({ video }) {
   return (
@@ -10,15 +13,12 @@ function BackgroundVideo({ video }) {
         muted
         className="hidden md:block absolute z-[-1] w-auto min-w-full min-h-full bottom-0 max-w-full  overflow-hidden"
       >
-        <source
-          src={video}
-          type="video/mp4"
-        />
+        <source src={video} type="video/mp4" />
         Your browser does not support the video tag.
       </video>
       <div className="hidden bg-[#030413] opacity-20 md:block absolute z-[-1] w-auto min-w-full min-h-full bottom-0 max-w-full  overflow-hidden"></div>
     </>
-  )
+  );
 }
 
 export default function Home() {
@@ -34,7 +34,7 @@ export default function Home() {
         <BackgroundVideo video="/banner.mp4" />
         <div className="px-4 lg:px-0 mx-auto max-w-[1080px] flex justify-center flex-col min-h-[100vh]">
           <div className="flex justify-center flex-row">
-            <div className="flex flex-col justify-between text-center h-[100vh] py-32">
+            <div className="flex flex-col justify-between text-center h-[100vh] py-10 md:py-32">
               <h1 className="text-4xl sm:text-5xl font-extrabold text-[#E4E4ED] ">
                 coinvise
               </h1>
@@ -47,14 +47,7 @@ export default function Home() {
                   NFT memberships
                 </h3>
               </div>
-              <div>
-                <Link
-                  href="/dashboard"
-                  className="px-10 py-3 border-0 border-transparent text-base font-medium rounded-full text-white bg-gradient-to-r from-[#00bdff] via-[#008dff] to-[#a13bf7] hover:drop-shadow-[0_3px_5px_#7d7d7d] md:py-4 md:text-lg"
-                >
-                  Use coinvise
-                </Link>
-              </div>
+              <GradientButton link="/dashboard" title="Use coinvise" />
             </div>
           </div>
         </div>
@@ -71,7 +64,60 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <div className="bg-[url('../../public/bg.svg')] bg-no-repeat bg-cover bg-center">
+          <div className="pt-[180px] md:pt-4 px-4 lg:px-0 mx-auto max-w-[1080px] flex md:justify-center items-center flex-col md:flex-row min-h-[100vh]">
+            <div className="w-full md:w-1/2 flex justify-center flex-col">
+              <div className="flex flex-col justify-center md:h-[100vh] lg:px-32 overflow-hidden">
+                <Image
+                  src="/coindeck.webp"
+                  width="300"
+                  height="100"
+                  alt="LogChain"
+                  className="absolute w-[150px] md:w-[300px] left-[50%] md:left-auto z-20"
+                />
+                <Image
+                  src="/coindeck.webp"
+                  width="300"
+                  height="100"
+                  alt="LogChain"
+                  className="absolute w-[150px] md:w-[300px] left-[50%] md:left-auto ml-[-80px] md:ml-[-120px] mt-[-50px] md:mt-[-150px] z-10"
+                />
+                <Image
+                  src="/coindeck.webp"
+                  width="300"
+                  height="100"
+                  alt="LogChain"
+                  className="absolute w-[150px] md:w-[300px] left-[50%] md:left-auto ml-[-160px] md:ml-[-240px] mt-[-100px] md:mt-[-300px]"
+                />
+              </div>
+            </div>
+            <div className="pt-[120px] md:pt-0 w-full md:w-1/2 flex justify-center text-center md:text-left flex-col">
+              <div className="flex flex-col justify-center md:h-[100vh] space-y-5 md:space-y-10">
+                <h2 className="text-3xl font-medium text-[#E4E4ED] sm:text-5xl block">
+                  <p>Industry leaders</p>
+                  <p>build with Coinvise</p>
+                </h2>
+                <p className="text-[#AEACC9] leading-relaxed font-medium text-1xl sm:text-2xl">
+                  Work with us to integrate our ecosystem of tooling into your
+                  infrastructure
+                </p>
+                <GradientButton link="/dashboard" title="Get in Touch" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="px-4 lg:px-0 mx-auto max-w-[1080px] flex justify-center flex-col min-h-[100vh]">
+          <div className="flex justify-center flex-row">
+            <div className="flex flex-col justify-center text-center h-[100vh] py-32 lg:px-32 space-y-20">
+              <h2 className="text-4xl font-medium text-[#E4E4ED] sm:text-5xl">
+                Start Growing Your <br/> Community Today
+              </h2>
+              <GradientButton link="/dashboard" title="Alright, I,m in" />
+            </div>
+          </div>
+        </div>
       </main>
+      <Footer />
     </>
   );
 }
