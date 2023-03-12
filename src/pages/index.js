@@ -1,4 +1,25 @@
 import Head from 'next/head'
+import Link from 'next/link'
+
+function BackgroundVideo({ video }) {
+  return (
+    <>
+      <video
+        autoPlay
+        loop
+        muted
+        className="hidden md:block absolute z-[-1] w-auto min-w-full min-h-full bottom-0 max-w-full  overflow-hidden"
+      >
+        <source
+          src={video}
+          type="video/mp4"
+        />
+        Your browser does not support the video tag.
+      </video>
+      <div className="hidden bg-[#030413] opacity-20 md:block absolute z-[-1] w-auto min-w-full min-h-full bottom-0 max-w-full  overflow-hidden"></div>
+    </>
+  )
+}
 
 export default function Home() {
   return (
@@ -9,9 +30,48 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <h1 className="text-3xl font-bold underline">
-        Hello world!
-      </h1>
+      <main className="bg-[#030413] opacity-90">
+        <BackgroundVideo video="/banner.mp4" />
+        <div className="px-4 lg:px-0 mx-auto max-w-[1080px] flex justify-center flex-col min-h-[100vh]">
+          <div className="flex justify-center flex-row">
+            <div className="flex flex-col justify-between text-center h-[100vh] py-32">
+              <h1 className="text-4xl sm:text-5xl font-extrabold text-[#E4E4ED] ">
+                coinvise
+              </h1>
+              <div className="text-4xl tracking-tight font-extrabold text-[#E4E4ED] sm:text-5xl md:text-7xl lg:px-32 space-y-5">
+                <h2 className="block xl:inline">
+                  Simplified Community Monetization & Growth
+                </h2>
+                <h3 className="block text-[#AEACC9] font-medium text-2xl lg:px-32">
+                  Leading communities trust our no-code tools for airdrops and
+                  NFT memberships
+                </h3>
+              </div>
+              <div>
+                <Link
+                  href="/dashboard"
+                  className="px-10 py-3 border-0 border-transparent text-base font-medium rounded-full text-white bg-gradient-to-r from-[#00bdff] via-[#008dff] to-[#a13bf7] hover:drop-shadow-[0_3px_5px_#7d7d7d] md:py-4 md:text-lg"
+                >
+                  Use coinvise
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="px-4 lg:px-0 mx-auto max-w-[1080px] flex justify-center flex-col min-h-[100vh] bg-[url('../../public/arch.png')] bg-no-repeat bg-contain bg-center">
+          <div className="flex justify-center flex-row">
+            <div className="flex flex-col justify-center text-center h-[100vh] py-32 lg:px-32 space-y-20">
+              <h2 className="text-4xl font-medium text-[#E4E4ED] sm:text-5xl md:text-7xl ">
+                Give your Community Superpowers
+              </h2>
+              <h3 className="text-[#AEACC9] leading-relaxed font-medium text-2xl lg:px-32">
+                Leading communities trust our no-code tools for airdrops and NFT
+                memberships
+              </h3>
+            </div>
+          </div>
+        </div>
+      </main>
     </>
-  )
+  );
 }
