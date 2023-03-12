@@ -2,7 +2,6 @@ import Footer from "@/components/footer";
 import GradientButton from "@/components/gradient-button";
 import Head from "next/head";
 import Image from "next/image";
-import Link from "next/link";
 
 function BackgroundVideo({ video }) {
   return (
