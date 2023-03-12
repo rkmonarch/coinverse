@@ -72,21 +72,21 @@ export default function Home() {
                   src="/coindeck.webp"
                   width="300"
                   height="100"
-                  alt="LogChain"
+                  alt="coindeck"
                   className="absolute w-[150px] md:w-[300px] left-[50%] md:left-auto z-20"
                 />
                 <Image
                   src="/coindeck.webp"
                   width="300"
                   height="100"
-                  alt="LogChain"
+                  alt="coindeck"
                   className="absolute w-[150px] md:w-[300px] left-[50%] md:left-auto ml-[-80px] md:ml-[-120px] mt-[-50px] md:mt-[-150px] z-10"
                 />
                 <Image
                   src="/coindeck.webp"
                   width="300"
                   height="100"
-                  alt="LogChain"
+                  alt="coindeck"
                   className="absolute w-[150px] md:w-[300px] left-[50%] md:left-auto ml-[-160px] md:ml-[-240px] mt-[-100px] md:mt-[-300px]"
                 />
               </div>
@@ -106,13 +106,139 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="px-4 lg:px-0 mx-auto max-w-[1080px] flex justify-center flex-col min-h-[100vh]">
-          <div className="flex justify-center flex-row">
-            <div className="flex flex-col justify-center text-center h-[100vh] py-32 lg:px-32 space-y-20">
-              <h2 className="text-4xl font-medium text-[#E4E4ED] sm:text-5xl">
-                Start Growing Your <br/> Community Today
-              </h2>
-              <GradientButton link="/dashboard" title="Alright, I,m in" />
+        <div className="lg:px-0 mx-auto flex justify-center flex-col min-h-[100vh] space-y-4">
+          <div className="flex justify-center text-[#E4E4ED] space-y-4 md:space-y-0 md:space-x-4 flex-col md:flex-row">
+            <div className="bg-black w-full md:w-2/3 rounded-r-lg p-r-10 p-12 flex flex-col justify-center items-center text-center space-y-4">
+              <div className="flex items-center space-x-3 max-w-[360px] w-full">
+                <div className="w-full">
+                  <p className="text-sm">POWERFUL</p>
+                  <p className="text-4xl font-medium">Integrations</p>
+                </div>
+              </div>
+              <div className="flex space-x-4">
+                <div className="bg-[#39376C] w-[50px] h-[50px] flex items-center justify-center p-[10px] rounded-full">
+                  <Image
+                    src="/smart-contract.svg"
+                    width="40"
+                    height="40"
+                    alt="icon"
+                  />
+                </div>
+                <div className="bg-[#39376C] w-[50px] h-[50px] flex items-center justify-center p-[10px] rounded-full">
+                  <Image
+                    src="/smart-contract.svg"
+                    width="40"
+                    height="40"
+                    alt="icon"
+                  />
+                </div>
+                <div className="bg-[#39376C] w-[50px] h-[50px] flex items-center justify-center p-[10px] rounded-full">
+                  <Image
+                    src="/smart-contract.svg"
+                    width="40"
+                    height="40"
+                    alt="icon"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="bg-black w-full md:w-1/3 rounded-l-lg p-12 flex flex-col items-center md:items-start justify-center text-center lg:text-left">
+              <div className="flex flex-col space-y-3 lg:space-y-0 lg:flex-row items-center space-x-5 md:space-x-2 lg:space-x-5 max-w-[720px]">
+                <div className="bg-[#39376C] w-[50px] h-[50px] flex items-center justify-center p-[10px] rounded-full">
+                  <Image
+                    src="/smart-contract.svg"
+                    width="40"
+                    height="40"
+                    alt="icon"
+                  />
+                </div>
+                <div>
+                  <p className="text-sm">BATTLE TESTED</p>
+                  <p className="text-4xl font-medium">Smart Contracts</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-center text-[#E4E4ED] space-y-4 md:space-y-0 md:space-x-4 flex-col md:flex-row">
+            <div className="bg-black w-full md:w-1/3 rounded-r-lg p-r-10 p-12 flex flex-col justify-center items-center text-center space-y-4">
+              <div className="flex items-center space-x-3 max-w-[360px] w-full">
+                <div className="w-full">
+                  <p className="text-sm">COMPATIBLE</p>
+                  <p className="text-4xl font-medium">Networks</p>
+                </div>
+              </div>
+              <div className="flex space-x-2">
+                <div className="bg-[#39376C] w-[50px] h-[50px] flex items-center justify-center p-[10px] rounded-full">
+                  <Image
+                    src="/smart-contract.svg"
+                    width="40"
+                    height="40"
+                    alt="icon"
+                  />
+                </div>
+                <div className="bg-[#39376C] w-[50px] h-[50px] flex items-center justify-center p-[10px] rounded-full">
+                  <Image
+                    src="/smart-contract.svg"
+                    width="40"
+                    height="40"
+                    alt="icon"
+                  />
+                </div>
+                <div className="bg-[#39376C] w-[50px] h-[50px] flex items-center justify-center p-[10px] rounded-full">
+                  <Image
+                    src="/smart-contract.svg"
+                    width="40"
+                    height="40"
+                    alt="icon"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="bg-black w-full md:w-2/3 rounded-l-lg p-l-10 p-12 flex flex-col items-start justify-center">
+              <div className="flex items-center space-x-5 max-w-[720px]">
+                <div>
+                  <p className="text-sm">COMPATIBLE WITH YOUR</p>
+                  <p className="text-4xl font-medium">Trusted Wallets</p>
+                </div>
+                <div className="flex space-x-4">
+                  <div className="bg-[#39376C] w-[50px] h-[50px] flex items-center justify-center p-[10px] rounded-full">
+                    <Image
+                      src="/smart-contract.svg"
+                      width="40"
+                      height="40"
+                      alt="icon"
+                    />
+                  </div>
+                  <div className="bg-[#39376C] w-[50px] h-[50px] flex items-center justify-center p-[10px] rounded-full">
+                    <Image
+                      src="/smart-contract.svg"
+                      width="40"
+                      height="40"
+                      alt="icon"
+                    />
+                  </div>
+                  <div className="bg-[#39376C] w-[50px] h-[50px] flex items-center justify-center p-[10px] rounded-full">
+                    <Image
+                      src="/smart-contract.svg"
+                      width="40"
+                      height="40"
+                      alt="icon"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="bg-[url('../../public/arch.png')] bg-no-repeat bg-cover bg-center bg-fixed">
+          <div className="px-4 lg:px-0 mx-auto max-w-[1080px] flex justify-center flex-col min-h-[100vh]">
+            <div className="flex justify-center flex-row">
+              <div className="flex flex-col justify-center text-center h-[100vh] py-32 lg:px-32 space-y-20">
+                <h2 className="text-4xl font-medium text-[#E4E4ED] sm:text-5xl">
+                  Start Growing Your <br /> Community Today
+                </h2>
+                <GradientButton link="/dashboard" title="Alright, I,m in" />
+              </div>
             </div>
           </div>
         </div>
