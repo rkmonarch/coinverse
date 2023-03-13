@@ -1,9 +1,21 @@
-import { useColorMode } from "@chakra-ui/color-mode";
 import { BiSun, BiMoon } from "react-icons/bi";
 import Image from "next/image";
+import { useTheme } from "next-themes";
+import { useState, useEffect } from "react";
 
 const Navbar = () => {
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { theme, setTheme } = useTheme();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const switchTheme = () => {
+    if (isMounted) {
+      setTheme(theme === "light" ? "dark" : "light");
+    }
+  };
 
   return (
     <>
@@ -18,13 +30,19 @@ const Navbar = () => {
               alt="dashboard"
             />
           </button>
-          <button aria-label="Toggle Mode" onClick={toggleColorMode}>
-            {colorMode === "light" ? (
-              <BiMoon size="25" className="text-black hover:cursor-pointer" />
-            ) : (
-              <BiSun size="20" className="text-white hover:cursor-pointer" />
-            )}
-          </button>
+          {theme === "light" ? (
+            <BiMoon
+              size="25"
+              onClick={switchTheme}
+              className="text-white hover:cursor-pointer"
+            />
+          ) : (
+            <BiSun
+              size="20"
+              onClick={switchTheme}
+              className="text-white hover:cursor-pointer"
+            />
+          )}
         </div>
       </nav>
     </>
