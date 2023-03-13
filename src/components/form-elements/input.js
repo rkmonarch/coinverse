@@ -22,8 +22,8 @@ const Input = ({
         name={name}
         onChange={onChange}
         variant="outline" 
-        className="mt-0 text-gray-700 dark:text-white" 
-        focusBorderColor="#008dff" 
+        className="mt-0 text-gray-700 dark:text-white dark:border-[#605e8a]" 
+        focusBorderColor="#605e8a" 
         placeholder={placeholder}
         type={type}
       />
