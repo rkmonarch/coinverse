@@ -6,9 +6,9 @@ import Footer from "./footer";
 const Layout = ({ children }) => {
   return (
     <>
-      <main className="mx-auto max-w-full min-h-[100vh] bg-[#f5f5f5] dark:bg-[#161527]">
+      <main className="mx-auto max-w-full min-h-[100vh]">
         <Sidebar />
-        <div className="w-full min-h-[100vh] pl-[120px] pr-[60px]">
+        <div className="w-full min-h-[100vh] lg:pl-[120px] lg:pr-[60px]">
           <Navbar />
           <div className="pt-[20px]">
             {children}
