@@ -8,6 +8,7 @@ const Input = ({
   placeholder,
   type,
   onChange,
+  helper,
 }) => {
   return (
     <div>
@@ -26,6 +27,7 @@ const Input = ({
         placeholder={placeholder}
         type={type}
       />
+      <div className="text-sm mt-1 text-[#666666]">{helper}</div>
     </div>
   )
 }
@@ -36,5 +38,6 @@ Input.defaultProps = {
   label: '',
   placeholder: '',
   type: 'text',
-  onchange: () => {}
+  onchange: () => {},
+  helper: ''
 }
