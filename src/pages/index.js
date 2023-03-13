@@ -1,4 +1,4 @@
-import Footer from "@/components/footer";
+import Footer from "@/components/footer-landing";
 import GradientButton from "@/components/gradient-button";
 import Head from "next/head";
 import Image from "next/image";
