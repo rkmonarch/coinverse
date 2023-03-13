@@ -1,7 +1,7 @@
 const Footer = () => {
   return (
     <footer className=" w-full p-4 font-medium bg-[#f5f5f5] dark:bg-[#161527]">
-      <div className="mx-auto max-w-[1080px]">
+      <div className="pl-[80px] mx-auto max-w-[1080px] lg:pl-0">
         <div className="sm:flex sm:items-center sm:justify-between">
           <div className="flex mt-4 space-x-6 sm:justify-center sm:mt-0">
             {/* TODO: Add the logo here. */}
