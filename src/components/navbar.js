@@ -1,30 +1,43 @@
-import { useColorMode } from "@chakra-ui/color-mode";
-import { BiSun, BiMoon } from "react-icons/bi";
+import { BiSun, BiMoon, BiWalletAlt } from "react-icons/bi";
 import Image from "next/image";
+import { useTheme } from "next-themes";
+import { useState, useEffect } from "react";
 
 const Navbar = () => {
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { theme, setTheme } = useTheme();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const switchTheme = () => {
+    if (isMounted) {
+      setTheme(theme === "light" ? "dark" : "light");
+    }
+  };
 
   return (
     <>
-      <nav className="w-full mx-auto py-5">
+      <nav className="w-full mx-auto py-5 px-2 lg:px-0">
         <div className="max-w-[1080px] container flex flex-wrap justify-end space-x-5 items-center mx-auto">
-          <button className="flex items-center space-x-3 border rounded-full px-10 py-3 text-[#666666]">
+          <button className="flex items-center space-x-2 md:space-x-3 border rounded-full px-8 md:px-10 py-3 text-[#666666] hover:text-[#1e1e1e] hover:border-[#1e1e1e] dark:text-[#605e8a] dark:border-[#605e8a] dark:hover:text-white dark:hover:border-white">
             <p>Connect Wallet</p>
-            <Image
-              src="/wallet-icon.svg"
-              width="15"
-              height="15"
-              alt="dashboard"
+            <BiWalletAlt size={20} />
+          </button>
+          {theme === "light" ? (
+            <BiMoon
+              size="25"
+              onClick={switchTheme}
+              className="text-[#9f9f9f] hover:cursor-pointer dark:text-[#605e8a]"
             />
-          </button>
-          <button aria-label="Toggle Mode" onClick={toggleColorMode}>
-            {colorMode === "light" ? (
-              <BiMoon size="25" className="text-black hover:cursor-pointer" />
-            ) : (
-              <BiSun size="20" className="text-white hover:cursor-pointer" />
-            )}
-          </button>
+          ) : (
+            <BiSun
+              size="20"
+              onClick={switchTheme}
+              className="text-[#9f9f9f] hover:cursor-pointer dark:text-[#605e8a]"
+            />
+          )}
         </div>
       </nav>
     </>
