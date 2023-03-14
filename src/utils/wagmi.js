@@ -1,7 +1,5 @@
-import { createClient, configureChains } from "wagmi";
-import { polygonMumbai } from "wagmi/chains";
-import { publicProvider } from "wagmi/providers/public";
-import { MetaMaskConnector } from "wagmi/connectors/metaMask";
+import { createClient } from "wagmi";
+import { getDefaultClient } from 'connectkit';
 
 const firechain = {
   id: 997,
@@ -18,13 +16,10 @@ const firechain = {
   testnet: true,
 };
 
-const { chains, provider } = configureChains(
-  [firechain, polygonMumbai],
-  [publicProvider()]
+export const client = createClient(
+  getDefaultClient({
+    autoConnect: true,
+    appName: 'FitQuest',
+    chains: [firechain],
+  })
 );
-
-export const client = createClient({
-  autoConnect: true,
-  connectors: [new MetaMaskConnector({ chains })],
-  provider
-});
