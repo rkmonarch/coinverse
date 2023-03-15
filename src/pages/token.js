@@ -6,35 +6,45 @@ import Input from "@/components/form-elements/input";
 import Button from "@/components/form-elements/button";
 import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
 import ABI from "../utils/ABI.json";
+import { useToast } from "@chakra-ui/react";
 import { contractAddress } from "@/utils/constants";
 
 const Dashboard = () => {
   const [name, setName] = useState("");
   const [symbol, setSymbol] = useState("");
   const [supply, setSupply] = useState("");
+  const [whitelist, setWhitelist] = useState([]);
 
   const { address } = useAccount();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(contractAddress);
-    console.log("Hello", name, symbol, supply);
-  };
+  const toast = useToast();
 
   const { config } = usePrepareContractWrite({
     address: contractAddress,
     abi: ABI,
     functionName: "CreateToken",
-    functionArgs: [address, name, symbol, 0, 10*(10**18), 1, parseInt(supply)*10**18, [address]],
+    args: [address, name, symbol, 0, 0, 1, parseInt(supply), whitelist],
+    onError: (error) => {
+      console.log("Error", error);
+    },
+    onSuccess: (result) => {
+      console.log("Success", result);
+    }
   })
 
-  const { data, write } = useContractWrite(config);
+  const { data, write, error } = useContractWrite(config);
 
   const { isSuccess } = useWaitForTransaction(data?.hash);
 
   useEffect(() => {
     if (isSuccess) {
-      console.log("Success");
+      toast({
+        title: "Token Created",
+        description: "Your token has been created successfully",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   }, [isSuccess]);
 
@@ -53,7 +63,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <form className="flex flex-col space-y-3 w-[90%] md:max-w-[600px] mx-auto">
+        <form className="flex flex-col space-y-3 w-[90%] md:max-w-[600px] mx-auto" >
           <Input
             id="name"
             name="name"
@@ -81,10 +91,24 @@ const Dashboard = () => {
             onChange={(e) => setSupply(e.target.value)}
             helper="Recommended Supply - 10 Million Tokens."
           />
-          <Button label="Create" onClick={(e) => {
-            e.preventDefault();
-            write();
-          }} />
+          <Input
+            id="whitelist"
+            name="whitelist"
+            label="Enter addresses for whitelist"
+            placeholder="Enter comma separated addresses"
+            type="text"
+            onChange={(e) => {
+              const addresses = e.target.value.split(",");
+              setWhitelist(addresses);
+            }}
+            helper="Only whitelisted addresses will be able to mint your token."
+          />
+          <Button label="Create" onClick={
+            (e) => {
+              e.preventDefault();
+              write();
+            }
+          }/>
         </form>
       </div>
     </Layout>
