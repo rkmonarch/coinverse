@@ -1,27 +1,42 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "@/components/layout";
 import Image from "next/image";
 import { useState } from "react";
 import Input from "@/components/form-elements/input";
 import Button from "@/components/form-elements/button";
-import { usePrepareContractWrite } from "wagmi";
+import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
+import ABI from "../utils/ABI.json";
+import { contractAddress } from "@/utils/constants";
 
 const Dashboard = () => {
   const [name, setName] = useState("");
   const [symbol, setSymbol] = useState("");
   const [supply, setSupply] = useState("");
 
+  const { address } = useAccount();
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(contractAddress);
     console.log("Hello", name, symbol, supply);
   };
 
   const { config } = usePrepareContractWrite({
     address: contractAddress,
     abi: ABI,
-    functionName: ""
+    functionName: "CreateToken",
+    functionArgs: [address, name, symbol, 0, 10*(10**18), 1, parseInt(supply)*10**18, [address]],
   })
 
+  const { data, write } = useContractWrite(config);
+
+  const { isSuccess } = useWaitForTransaction(data?.hash);
+
+  useEffect(() => {
+    if (isSuccess) {
+      console.log("Success");
+    }
+  }, [isSuccess]);
 
   return (
     <Layout>
@@ -66,10 +81,10 @@ const Dashboard = () => {
             onChange={(e) => setSupply(e.target.value)}
             helper="Recommended Supply - 10 Million Tokens."
           />
-          <Button
-            label="Create"
-            onClick={handleSubmit}
-          />
+          <Button label="Create" onClick={(e) => {
+            e.preventDefault();
+            write();
+          }} />
         </form>
       </div>
     </Layout>

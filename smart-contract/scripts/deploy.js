@@ -5,7 +5,7 @@ async function main() {
   A ContractFactory in ethers.js is an abstraction used to deploy new smart contracts,
   so launchPadContract here is a factory for instances of our Launchpad contract.
   */
-  const launchPadContract = await ethers.getContractFactory("MultiFactory");
+  const launchPadContract = await ethers.getContractFactory("LaunchPad");
 
   // here we deploy the contract
   const deployedLaunchPadContract = await launchPadContract.deploy(
