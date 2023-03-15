@@ -59,7 +59,7 @@ const Dashboard = () => {
             <div className="font-bold text-xl mb-2">TOKEN</div>
             <div className="font-bold text-md mb-2">
               Mint a personal or a community token on a fixed supply Already
-              have a token? Import token into Coinvise
+              have a token? Import token into Coinverse
             </div>
           </div>
         </div>

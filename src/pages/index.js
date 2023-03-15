@@ -3,23 +3,6 @@ import GradientButton from "@/components/gradient-button";
 import Head from "next/head";
 import Image from "next/image";
 
-function BackgroundVideo({ video }) {
-  return (
-    <>
-      <video
-        autoPlay
-        loop
-        muted
-        className="hidden md:block absolute z-[-1] w-auto min-w-full min-h-full bottom-0 max-w-full  overflow-hidden"
-      >
-        <source src={video} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-      <div className="hidden bg-[#030413] opacity-20 md:block absolute z-[-1] w-auto min-w-full min-h-full bottom-0 max-w-full  overflow-hidden"></div>
-    </>
-  );
-}
-
 export default function Home() {
   return (
     <>
@@ -34,8 +17,15 @@ export default function Home() {
           <div className="px-4 lg:px-0 mx-auto max-w-[1080px] flex justify-center flex-col min-h-[100vh]">
             <div className="flex justify-center flex-row">
               <div className="flex flex-col justify-between text-center h-[100vh] py-10 md:py-32">
-                <h1 className="text-4xl sm:text-5xl font-extrabold text-[#E4E4ED] ">
-                  coinvise
+                <Image 
+                src="/coin.png" 
+                width="100"
+                height="100"
+                className="mx-auto"
+                alt="coinverse"
+                />
+                <h1 className="text-4xl sm:text-5xl mt-[-3rem] font-extrabold text-[#E4E4ED]">
+                  coinverse
                 </h1>
                 <div className="text-4xl tracking-tight font-extrabold text-[#E4E4ED] sm:text-5xl md:text-7xl lg:px-32 space-y-5">
                   <h2 className="block xl:inline">
@@ -46,7 +36,7 @@ export default function Home() {
                     NFT memberships
                   </h3>
                 </div>
-                <GradientButton link="/dashboard" title="Use coinvise" />
+                <GradientButton link="/dashboard" title="Use coinverse" />
               </div>
             </div>
           </div>
@@ -94,7 +84,7 @@ export default function Home() {
             <div className="flex flex-col justify-center md:h-[100vh] space-y-5 md:space-y-10">
               <h2 className="text-3xl font-medium text-[#E4E4ED] sm:text-5xl block">
                 <p>Industry leaders</p>
-                <p>build with Coinvise</p>
+                <p>build with Coinverse</p>
               </h2>
               <p className="text-[#AEACC9] leading-relaxed font-medium text-1xl sm:text-2xl">
                 Work with us to integrate our ecosystem of tooling into your
