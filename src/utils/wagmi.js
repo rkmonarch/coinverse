@@ -11,7 +11,7 @@ const firechain = {
     symbol: "5ire",
   },
   rpcUrls: {
-    default: { http: ["https://chain-node.5ire.network"] }
+    default: { http: ["https://rpc-testnet.5ire.network"] }
   },
   testnet: true,
 };

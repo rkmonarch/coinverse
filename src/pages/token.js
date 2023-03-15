@@ -1,12 +1,28 @@
 import React from "react";
 import Layout from "@/components/layout";
 import Image from "next/image";
-import Link from "next/link";
+import { useState } from "react";
 import Input from "@/components/form-elements/input";
 import Button from "@/components/form-elements/button";
-import Checkbox from "@/components/form-elements/checkbox";
+import { usePrepareContractWrite } from "wagmi";
 
 const Dashboard = () => {
+  const [name, setName] = useState("");
+  const [symbol, setSymbol] = useState("");
+  const [supply, setSupply] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Hello", name, symbol, supply);
+  };
+
+  const { config } = usePrepareContractWrite({
+    address: contractAddress,
+    abi: ABI,
+    functionName: ""
+  })
+
+
   return (
     <Layout>
       <div className="flex flex-col space-y-8 justify-center items-center max-w-[800px] mx-auto pb-32 pl-[60px] lg:pl-0">
@@ -29,7 +45,7 @@ const Dashboard = () => {
             label="Name"
             placeholder="Forefront"
             type="text"
-            onChange={() => {}}
+            onChange={(e) => setName(e.target.value)}
             helper="This Can Be A Discord Server, Project Or Your Own Name."
           />
           <Input
@@ -38,30 +54,22 @@ const Dashboard = () => {
             label="Symbol"
             placeholder="FF"
             type="text"
-            onChange={() => {}}
+            onChange={(e) => setSymbol(e.target.value)}
             helper="Your Token Symbol (1-7 Characters), No '$' Sign Required."
           />
           <Input
             id="supply"
             name="supply"
-            label="Supply"
+            label="Initial Supply"
             placeholder="0"
             type="number"
-            onChange={() => {}}
+            onChange={(e) => setSupply(e.target.value)}
             helper="Recommended Supply - 10 Million Tokens."
           />
-          <Input
-            id="description"
-            name="description"
-            label="Description"
-            placeholder="Rewarding"
-            type="number"
-            onChange={() => {}}
-            helper="Give Us A Brief Description On How You Would Use The Token."
+          <Button
+            label="Create"
+            onClick={handleSubmit}
           />
-          <Checkbox label="Minting" onChange={()=>{}} />
-          <Checkbox label="Minting" onChange={()=>{}} />
-          <Button label="Create" onClick={() => {}} />
         </form>
       </div>
     </Layout>
