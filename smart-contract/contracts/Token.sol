@@ -30,7 +30,7 @@ contract Token is ERC20 {
         }
         creator = _creator;
         require(totalTokenMinted <= totalCap,"Limit exceed");
-        _mint(_creator, _initialMint);
+        _mint(_creator, totalTokenMinted);
     }
 
     function mint(address _to, uint256 _amount) public onlyAllowList {
