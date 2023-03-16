@@ -4,6 +4,7 @@ import { WagmiConfig } from "wagmi";
 import { client } from "../utils/wagmi";
 import { ConnectKitProvider } from "connectkit";
 import { ThemeProvider } from "next-themes";
+import "animate.css/animate.min.css";
 
 export default function App({ Component, pageProps }) {
   return (
