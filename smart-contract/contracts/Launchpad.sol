@@ -17,15 +17,17 @@ contract LaunchPad {
         address creator;
         string name;
         string symbol;
-        bool setTotalCap;
+        bool wantTotalCap;
         uint totalCap;
         bool wantInitialMint;
         uint initialMint;
-        address[] whiteListAddresses;
+        // address[] whiteListAddresses;
     }
 
+    // struct to store all the 
+
     // searching the struct data of Token and LaunchPad using creator address
-    mapping(address => LaunchStruct) public allData;
+    mapping(address => LaunchStruct[]) public allData;
 
     // creator address to check the addresses of token created
     // creator => token addresses
@@ -41,35 +43,36 @@ contract LaunchPad {
     /**
      * @dev function to create the contract MultiSigWallet
      */
-    function CreateToken(address _creator, string memory _name, string memory _symbol, bool _setTotalCap, uint _totalCap, bool _wantInitialMint, uint _initialMint, address[] memory _whiteListAddresses) public {
+    function CreateToken(address _creator, string memory _name, string memory _symbol, bool _wantTotalCap, uint _totalCap, bool _wantInitialMint, uint _initialMint/*, address[] memory _whiteListAddresses*/) public {
         // Create a new Wallet contract
         Token token =  new Token(
             _creator,
             _name,
             _symbol,
-            _setTotalCap,
+            _wantTotalCap,
             _totalCap,
             _wantInitialMint,
-            _initialMint,
-            _whiteListAddresses
+            _initialMint
+            // _whiteListAddresses
         );
         // Increment the number of Tokens Created
         numOfTokensCreated++;
 
         // Add token data to the mapping
-        allData[_creator] = (
+        allData[_creator].push(
             LaunchStruct(
             address(this),
             _creator,
             _name,
             _symbol,
-            _setTotalCap,
+            _wantTotalCap,
             _totalCap,
             _wantInitialMint,
-            _initialMint,
-            _whiteListAddresses
+            _initialMint
+            // _whiteListAddresses
             )
         );
+
 
         // search the profile by using creator address
         // Solidity mappings with array type keys are not a good idea to use in practice, 
