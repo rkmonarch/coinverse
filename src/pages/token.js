@@ -1,12 +1,53 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "@/components/layout";
 import Image from "next/image";
-import Link from "next/link";
+import { useState } from "react";
 import Input from "@/components/form-elements/input";
 import Button from "@/components/form-elements/button";
-import Checkbox from "@/components/form-elements/checkbox";
+import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
+import ABI from "../utils/ABI.json";
+import { useToast } from "@chakra-ui/react";
+import { contractAddress } from "@/utils/constants";
 
 const Dashboard = () => {
+  const [name, setName] = useState("");
+  const [symbol, setSymbol] = useState("");
+  const [supply, setSupply] = useState("");
+  const [whitelist, setWhitelist] = useState([]);
+
+  const { address } = useAccount();
+
+  const toast = useToast();
+
+  const { config } = usePrepareContractWrite({
+    address: contractAddress,
+    abi: ABI,
+    functionName: "CreateToken",
+    args: [address, name, symbol, 0, 0, 1, parseInt(supply), whitelist],
+    onError: (error) => {
+      console.log("Error", error);
+    },
+    onSuccess: (result) => {
+      console.log("Success", result);
+    }
+  })
+
+  const { data, write, error } = useContractWrite(config);
+
+  const { isSuccess } = useWaitForTransaction(data?.hash);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast({
+        title: "Token Created",
+        description: "Your token has been created successfully",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }, [isSuccess]);
+
   return (
     <Layout>
       <div className="flex flex-col space-y-8 justify-center items-center max-w-[800px] mx-auto pb-32 pl-[60px] lg:pl-0">
@@ -18,18 +59,18 @@ const Dashboard = () => {
             <div className="font-bold text-xl mb-2">TOKEN</div>
             <div className="font-bold text-md mb-2">
               Mint a personal or a community token on a fixed supply Already
-              have a token? Import token into Coinvise
+              have a token? Import token into Coinverse
             </div>
           </div>
         </div>
-        <form className="flex flex-col space-y-3 w-[90%] md:max-w-[600px] mx-auto">
+        <form className="flex flex-col space-y-3 w-[90%] md:max-w-[600px] mx-auto" >
           <Input
             id="name"
             name="name"
             label="Name"
             placeholder="Forefront"
             type="text"
-            onChange={() => {}}
+            onChange={(e) => setName(e.target.value)}
             helper="This Can Be A Discord Server, Project Or Your Own Name."
           />
           <Input
@@ -38,30 +79,36 @@ const Dashboard = () => {
             label="Symbol"
             placeholder="FF"
             type="text"
-            onChange={() => {}}
+            onChange={(e) => setSymbol(e.target.value)}
             helper="Your Token Symbol (1-7 Characters), No '$' Sign Required."
           />
           <Input
             id="supply"
             name="supply"
-            label="Supply"
+            label="Initial Supply"
             placeholder="0"
             type="number"
-            onChange={() => {}}
+            onChange={(e) => setSupply(e.target.value)}
             helper="Recommended Supply - 10 Million Tokens."
           />
           <Input
-            id="description"
-            name="description"
-            label="Description"
-            placeholder="Rewarding"
-            type="number"
-            onChange={() => {}}
-            helper="Give Us A Brief Description On How You Would Use The Token."
+            id="whitelist"
+            name="whitelist"
+            label="Enter addresses for whitelist"
+            placeholder="Enter comma separated addresses"
+            type="text"
+            onChange={(e) => {
+              const addresses = e.target.value.split(",");
+              setWhitelist(addresses);
+            }}
+            helper="Only whitelisted addresses will be able to mint your token."
           />
-          <Checkbox label="Minting" onChange={()=>{}} />
-          <Checkbox label="Minting" onChange={()=>{}} />
-          <Button label="Create" onClick={() => {}} />
+          <Button label="Create" onClick={
+            (e) => {
+              e.preventDefault();
+              write();
+            }
+          }/>
         </form>
       </div>
     </Layout>
