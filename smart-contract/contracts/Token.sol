@@ -16,7 +16,7 @@ contract Token is ERC20 {
         _;
     }
 
-    constructor(address _creator, string memory _name, string memory _symbol, bool _setTotalCap, uint _totalCap, bool _wantInitialMint, uint _initialMint, address[] memory _whiteListAddresses) ERC20(_name, _symbol) {
+    constructor(address _creator, string memory _name, string memory _symbol, bool _setTotalCap, uint _totalCap, bool _wantInitialMint, uint _initialMint/*, address[] memory _whiteListAddresses*/) ERC20(_name, _symbol) {
         totalCap = _totalCap;
         totalTokenMinted = _initialMint;
         if(_setTotalCap == false){
@@ -25,9 +25,9 @@ contract Token is ERC20 {
         if(_wantInitialMint == false ){
             totalTokenMinted = 0;
         }
-        for(uint i=0; i < _whiteListAddresses.length; i++){
-            whiteList[_whiteListAddresses[i]] = true;
-        }
+        // for(uint i=0; i < _whiteListAddresses.length; i++){
+        //     whiteList[_whiteListAddresses[i]] = true;
+        // }
         creator = _creator;
         require(totalTokenMinted <= totalCap,"Limit exceed");
         _mint(_creator, totalTokenMinted);
