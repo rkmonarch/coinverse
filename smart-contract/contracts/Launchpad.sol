@@ -3,13 +3,15 @@ pragma solidity ^0.8.9;
 
 import "./Token.sol";
 
+error ONLY_ONWER_CAN_CALL();
+
 contract LaunchPad {
 
     // LaunchPad contract onwer
-    address private immutable launchPadOwner;
+    address private launchPadOwner;
 
     // number of Tokens Created
-    uint256 public numOfTokensCreated;
+    uint256 private numOfTokensCreated;
 
     // struct to store all the data of Token and LaunchPad contract
     struct LaunchStruct {
@@ -24,14 +26,20 @@ contract LaunchPad {
         // address[] whiteListAddresses;
     }
 
-    // struct to store all the 
-
     // searching the struct data of Token and LaunchPad using creator address
     mapping(address => LaunchStruct[]) public allData;
 
     // creator address to check the addresses of token created
     // creator => token addresses
     mapping(address => address[]) public tokenAddresses;
+
+    // modifier to allow onwer to call the function
+    modifier onlyOwner() {
+        if(msg.sender != launchPadOwner){
+            revert ONLY_ONWER_CAN_CALL();
+        }
+        _;
+    }
 
     /**
      * @dev constructor to get the owner address of this contract factory
@@ -80,6 +88,9 @@ contract LaunchPad {
         tokenAddresses[_creator].push(address(token));
     }
 
+    function setNewOwner(address _newOnwer) public onlyOwner {
+        launchPadOwner = _newOnwer;
+    }
 
     // get the address of Launchpad contract
     function getAddressOfLaunchpadContract() public view returns (address) {
@@ -95,4 +106,10 @@ contract LaunchPad {
     function getTokensCreatedByCreator(address _creatorAddress) public view returns(address[] memory){
         return tokenAddresses[_creatorAddress];
     }
+
+    function getTotalToken() public view returns(uint){
+        return numOfTokensCreated;
+    }
+
+
 }
