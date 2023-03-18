@@ -157,10 +157,12 @@ contract LaunchPad {
         return tokenAddresses[_creatorAddress];
     }
 
+    // get the total token minted
     function getTotalToken() public view returns(uint){
         return numOfTokensCreated;
     }
 
+    // get the price of the token
     function getTokenCreationPrice() public view returns(uint){
         return tokenCreationPrice;
     }
