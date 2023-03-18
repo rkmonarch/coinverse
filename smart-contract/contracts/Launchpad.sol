@@ -10,6 +10,10 @@ error TRANSFER_FAILED();
 
 contract LaunchPad {
 
+    uint internal totalCap;
+    uint internal initialTokenMinted;
+    address internal creator;
+
     // LaunchPad contract onwer
     address private launchPadOwner;
 
@@ -62,15 +66,26 @@ contract LaunchPad {
         if(msg.value < tokenCreationPrice){
             revert SEND_SUFFICIENT_ETH();
         }
+
+        totalCap = _totalCap;
+        initialTokenMinted = _initialMint;
+        if(_wantTotalCap == false){
+            totalCap = type(uint256).max;
+        }
+
+        if(_wantInitialMint == false ){
+            initialTokenMinted = 0;
+        }
+        
         // Create a new Wallet contract
         Token token =  new Token(
             _creator,
             _name,
             _symbol,
             _wantTotalCap,
-            _totalCap,
+            totalCap,
             _wantInitialMint,
-            _initialMint
+            initialTokenMinted
             // _whiteListAddresses
         );
         // Increment the number of Tokens Created
@@ -84,9 +99,9 @@ contract LaunchPad {
             _name,
             _symbol,
             _wantTotalCap,
-            _totalCap,
+            totalCap,
             _wantInitialMint,
-            _initialMint
+            initialTokenMinted
             // _whiteListAddresses
             )
         );
