@@ -13,6 +13,9 @@ contract LaunchPad {
     // number of Tokens Created
     uint256 private numOfTokensCreated;
 
+    //
+    uint256 private tokenCreationPrice;
+
     // struct to store all the data of Token and LaunchPad contract
     struct LaunchStruct {
         address launchPadAddress;
@@ -44,8 +47,9 @@ contract LaunchPad {
     /**
      * @dev constructor to get the owner address of this contract factory
      */
-    constructor(address _launchPadOwner) {
+    constructor(address _launchPadOwner, uint256 _tokenCreationPrice) {
         launchPadOwner = _launchPadOwner;
+        tokenCreationPrice = _tokenCreationPrice;
     }
 
     /**
@@ -92,6 +96,13 @@ contract LaunchPad {
         launchPadOwner = _newOnwer;
     }
 
+    function setNewPrice(uint256 _newTokenCreationPrice) public onlyOwner{
+        tokenCreationPrice =  _newTokenCreationPrice;
+    }
+
+    
+
+
     // get the address of Launchpad contract
     function getAddressOfLaunchpadContract() public view returns (address) {
         return address(this);
@@ -111,5 +122,8 @@ contract LaunchPad {
         return numOfTokensCreated;
     }
 
+    function getTokenCreationPrice() public view returns(uint){
+        return tokenCreationPrice;
+    }
 
 }
