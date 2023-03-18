@@ -5,6 +5,8 @@ import "./Token.sol";
 
 error ONLY_ONWER_CAN_CALL();
 error SEND_SUFFICIENT_ETH();
+error NOT_ENOUGH_BALANCE();
+error TRANSFER_FAILED();
 
 contract LaunchPad {
 
@@ -104,7 +106,21 @@ contract LaunchPad {
         tokenCreationPrice =  _newTokenCreationPrice;
     }
 
-    
+    // function to withdraw the funds from Launchpad contract
+    function withdraw(uint256 _amount, address _receiver) external payable {
+        if(msg.sender != launchPadOwner){
+            revert ONLY_ONWER_CAN_CALL();
+        }
+       
+        if(address(this).balance < _amount){
+            revert NOT_ENOUGH_BALANCE();
+        }
+
+        (bool success, ) = _receiver.call{value: _amount}("");
+        if(!success){
+            revert TRANSFER_FAILED();
+        }
+    }
 
 
     // get the address of Launchpad contract
@@ -130,4 +146,9 @@ contract LaunchPad {
         return tokenCreationPrice;
     }
 
+    // receive function is used to receive Ether when msg.data is empty
+    receive() external payable {}
+
+    // Fallback function is used to receive Ether when msg.data is NOT empty
+    fallback() external payable {}
 }
