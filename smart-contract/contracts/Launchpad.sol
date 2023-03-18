@@ -26,6 +26,7 @@ contract LaunchPad {
     // struct to store all the data of Token and LaunchPad contract
     struct LaunchStruct {
         address launchPadAddress;
+        address tokenAddress;
         address creator;
         string name;
         string symbol;
@@ -33,7 +34,7 @@ contract LaunchPad {
         uint totalCap;
         bool wantInitialMint;
         uint initialMint;
-        // address[] whiteListAddresses;
+        address[] whiteListAddresses;
     }
 
     // searching the struct data of Token and LaunchPad using creator address
@@ -62,7 +63,7 @@ contract LaunchPad {
     /**
      * @dev function to create the contract MultiSigWallet
      */
-    function CreateToken(address _creator, string memory _name, string memory _symbol, bool _wantTotalCap, uint _totalCap, bool _wantInitialMint, uint _initialMint/*, address[] memory _whiteListAddresses*/) payable public {
+    function CreateToken(address _creator, string memory _name, string memory _symbol, bool _wantTotalCap, uint _totalCap, bool _wantInitialMint, uint _initialMint, address[] memory _whiteListAddresses) payable public {
         if(msg.value < tokenCreationPrice){
             revert SEND_SUFFICIENT_ETH();
         }
@@ -82,11 +83,9 @@ contract LaunchPad {
             _creator,
             _name,
             _symbol,
-            _wantTotalCap,
             totalCap,
-            _wantInitialMint,
-            initialTokenMinted
-            // _whiteListAddresses
+            initialTokenMinted,
+            _whiteListAddresses
         );
         // Increment the number of Tokens Created
         numOfTokensCreated++;
@@ -95,14 +94,15 @@ contract LaunchPad {
         allData[_creator].push(
             LaunchStruct(
             address(this),
+            address(token),
             _creator,
             _name,
             _symbol,
             _wantTotalCap,
             totalCap,
             _wantInitialMint,
-            initialTokenMinted
-            // _whiteListAddresses
+            initialTokenMinted,
+            _whiteListAddresses
             )
         );
 
@@ -113,6 +113,10 @@ contract LaunchPad {
         tokenAddresses[_creator].push(address(token));
     }
 
+    /**
+     * @dev function to set new onwer
+     * @param _newOnwer address of new onwer
+     */
     function setNewOwner(address _newOnwer) public onlyOwner {
         launchPadOwner = _newOnwer;
     }
@@ -122,7 +126,7 @@ contract LaunchPad {
     }
 
     // function to withdraw the funds from Launchpad contract
-    function withdraw(uint256 _amount, address _receiver) external payable {
+    function withdraw(uint256 _amount, address _receiver) external payable onlyOwner{
         if(msg.sender != launchPadOwner){
             revert ONLY_ONWER_CAN_CALL();
         }
