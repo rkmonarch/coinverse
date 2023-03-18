@@ -4,6 +4,7 @@ pragma solidity ^0.8.9;
 import "./Token.sol";
 
 error ONLY_ONWER_CAN_CALL();
+error SEND_SUFFICIENT_ETH();
 
 contract LaunchPad {
 
@@ -13,7 +14,7 @@ contract LaunchPad {
     // number of Tokens Created
     uint256 private numOfTokensCreated;
 
-    //
+    // Amount to pay to create token
     uint256 private tokenCreationPrice;
 
     // struct to store all the data of Token and LaunchPad contract
@@ -55,7 +56,10 @@ contract LaunchPad {
     /**
      * @dev function to create the contract MultiSigWallet
      */
-    function CreateToken(address _creator, string memory _name, string memory _symbol, bool _wantTotalCap, uint _totalCap, bool _wantInitialMint, uint _initialMint/*, address[] memory _whiteListAddresses*/) public {
+    function CreateToken(address _creator, string memory _name, string memory _symbol, bool _wantTotalCap, uint _totalCap, bool _wantInitialMint, uint _initialMint/*, address[] memory _whiteListAddresses*/) payable public {
+        if(msg.value < tokenCreationPrice){
+            revert SEND_SUFFICIENT_ETH();
+        }
         // Create a new Wallet contract
         Token token =  new Token(
             _creator,
