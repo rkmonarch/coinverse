@@ -4,8 +4,41 @@ import Image from "next/image";
 import Link from "next/link";
 import { color } from "framer-motion";
 import Table from "@/components/table";
+import { contractAddress } from "@/utils/constants";
+import ABI from "../utils/ABI.json";
+import { useAccount, useContractRead } from "wagmi";
+
+import { useState,useEffect } from "react";
 
 const Card = ({ title, img, link, color }) => {
+  
+
+  const [productData, setProductData] = useState([{}]);
+  const { address } = useAccount();
+
+
+  const { data, isError, isLoading } = useContractRead({
+    address: contractAddress,
+    abi: ABI,
+    functionName: "getTokensCreatedByCreator",
+    args: [address],
+  });
+
+  useEffect(() => {
+    if (data) {
+        console.log("data is here",data);
+      let tokens = [];
+      for (let tokens of data) {
+       console.log(tokens);
+      }
+     
+    }
+  }, [data, isLoading]);
+
+  useEffect(() => {
+    console.log(productData);
+  }, [productData]);
+
   return (
     <div className="w-[90%] md:w-1/3 flex flex-col">
       <h1 className="text-[#9f9f9f] font-bold text-sm pl-5 pb-3 dark:text-[#605e8a]">
@@ -58,6 +91,8 @@ const data = [
     "items": "50"
   },
 ]
+
+
 
 const Dashboard = () => {
   return (
