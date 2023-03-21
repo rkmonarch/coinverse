@@ -27,20 +27,19 @@ const Dashboard = () => {
     address: contractAddress,
     abi: ABI,
     functionName: "CreateToken",
-    args: [address, name, symbol, capFlag, parseInt(totalCap), supplyFlag, parseInt(supply), whitelist],
+    args: [address, name, symbol, capFlag, parseInt(totalCap), supplyFlag, parseInt(supply), whitelist], 
     onError: (error) => {
-      console.log("Error", error);
-    },
-    onSuccess: (result) => {
-      console.log("Success", result);
+      console.log("error", error);
     }
   })
 
   const { data, write, error } = useContractWrite(config);
 
-  const { isSuccess } = useWaitForTransaction(data?.hash);
+  const { isSuccess } = useWaitForTransaction({hash: data?.hash});
 
   useEffect(() => {
+    console.log("isSuccess", isSuccess);
+    console.log("error", error);
     if (isSuccess) {
       toast({
         title: "Token Created",
@@ -50,7 +49,16 @@ const Dashboard = () => {
         isClosable: true,
       });
     }
-  }, [isSuccess]);
+    if (error) {
+      toast({
+        title: "Error",
+        description: "There was an error creating your token: " + error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }, [isSuccess, error]);
 
   return (
     <Layout>
