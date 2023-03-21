@@ -12,33 +12,6 @@ import { useState,useEffect } from "react";
 
 const Card = ({ title, img, link, color }) => {
   
-
-  const [productData, setProductData] = useState([{}]);
-  const { address } = useAccount();
-
-
-  const { data, isError, isLoading } = useContractRead({
-    address: contractAddress,
-    abi: ABI,
-    functionName: "getTokensCreatedByCreator",
-    args: [address],
-  });
-
-  useEffect(() => {
-    if (data) {
-        console.log("data is here",data);
-      let tokens = [];
-      for (let tokens of data) {
-       console.log(tokens);
-      }
-     
-    }
-  }, [data, isLoading]);
-
-  useEffect(() => {
-    console.log(productData);
-  }, [productData]);
-
   return (
     <div className="w-[90%] md:w-1/3 flex flex-col">
       <h1 className="text-[#9f9f9f] font-bold text-sm pl-5 pb-3 dark:text-[#605e8a]">
@@ -68,33 +41,42 @@ const Card = ({ title, img, link, color }) => {
 };
 
 const headers = [
-  "collections",
-  "volume",
-  "price",
-  "owner",
-  "items"
-]
-
-const data = [
-  {
-    "collections": "catalog",
-    "volume": "500 collection",
-    "price": "$100",
-    "owner": "James Won",
-    "items": "50"
-  },
-  {
-    "collections": "catalog",
-    "volume": "500 collection",
-    "price": "$100",
-    "owner": "James Won",
-    "items": "50"
-  },
+  "Name",
+  "Symbol",
+  "Total Supply",
+  "Total Cap"
 ]
 
 
 
 const Dashboard = () => {
+
+  const [productData, setProductData] = useState([{}]);
+  const { address } = useAccount();
+
+  const { data, isError, isLoading } = useContractRead({
+    address: contractAddress,
+    abi: ABI,
+    functionName: "getTokensWithMetadataCreatedByCreator",
+    args: [address],
+  });
+  
+  useEffect(() => {
+    if (data) {
+      let tokensData = []
+      data.map((item) => {
+        tokensData.push({
+            name: item.name,
+            symbol: item.symbol,
+            totalSupply: parseInt(item.initialMint).toString(),
+            totalCap: parseInt(item.totalCap).toString(),
+          })
+      });
+      setProductData(tokensData);
+    }
+  }, [data]);
+
+
   return (
     <Layout>
       <div className="flex flex-col w-full pl-[80px] lg:pl-0 pb-10 md:pr-5">
@@ -126,7 +108,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div>
-        <Table headers={headers} data={data} />  
+        <Table headers={headers} data={productData} />  
       </div>
     </Layout>
   );
