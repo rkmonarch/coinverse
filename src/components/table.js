@@ -26,28 +26,22 @@ const Table = ({ headers, data }) => {
               <tr>
                 <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
                   <div className="font-medium text-gray-800 dark:text-white ">
-                    {i.collections}
+                    {i.name}
                   </div>
                 </td>
                 <td className="px-4 py-4 text-sm font-medium whitespace-nowrap text-left">
                   <div className="inline px-3 py-1 text-sm font-normal rounded-full text-emerald-500 gap-x-2 bg-emerald-100/60 dark:bg-gray-800">
-                    {i.volume}
+                    {i.symbol}
                   </div>
                 </td>
                 <td className="px-4 py-4 text-sm whitespace-nowrap">
                   <div className="text-gray-700 dark:text-gray-200">
-                    {i.price}
+                    {i.totalSupply}
                   </div>
                 </td>
                 <td className="px-4 py-4 text-sm whitespace-nowrap">
                   <div className="text-gray-700 dark:text-gray-200">
-                    {i.owner}
-                  </div>
-                </td>
-
-                <td className="px-4 py-4 text-sm whitespace-nowrap">
-                  <div className="text-gray-700 dark:text-gray-200">
-                    {i.items}
+                    {i.totalCap}
                   </div>
                 </td>
               </tr>

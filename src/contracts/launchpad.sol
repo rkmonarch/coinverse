@@ -92,4 +92,15 @@ contract LaunchPad {
     function getTokensCreatedByCreator(address _creatorAddress) public view returns(address[] memory){
         return tokenAddresses[_creatorAddress];
     }
+
+    // get all tokens with metadata created by creator 
+    function getTokensWithMetadataCreatedByCreator(address _creatorAddress) public view returns(LaunchStruct[] memory){
+        address[] memory _tokenAddresses = tokenAddresses[_creatorAddress];
+        LaunchStruct[] memory _tokens = new LaunchStruct[](_tokenAddresses.length);
+        for(uint i = 0; i < _tokenAddresses.length; i++){
+            _tokens[i] = allData[_creatorAddress];
+        }
+        return _tokens;
+    }
+
 }
