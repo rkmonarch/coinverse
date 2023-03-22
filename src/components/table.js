@@ -1,5 +1,34 @@
 import React from "react";
 
+const tokenAddress = "0xd00981105e61274c8a5cd5a88fe7e037d935b513";
+const tokenSymbol = "TUT";
+const tokenDecimals = 18;
+const tokenImage = "http://placekitten.com/200/300";
+const addToken = () => {
+  if (typeof window.ethereum !== "undefined") {
+    window.ethereum
+      .request({
+        method: "wallet_watchAsset",
+        params: {
+          type: "ERC20",
+          options: {
+            address: tokenAddress,
+            symbol: tokenSymbol,
+            decimals: tokenDecimals,
+            image: tokenImage,
+          },
+        },
+      })
+      .then((success) => {
+        if (success) {
+          console.log("Token added successfully!");
+        } else {
+          console.log("Oops! Error adding this token");
+        }
+      });
+  }
+};
+
 const Table = ({ headers, data }) => {
   return (
     <table className="min-w-full divide-gray-200 dark:divide-gray-700">
@@ -42,6 +71,17 @@ const Table = ({ headers, data }) => {
                 <td className="px-4 py-4 text-sm whitespace-nowrap">
                   <div className="text-gray-700 dark:text-gray-200">
                     {i.totalCap}
+                  </div>
+                </td>
+
+                <td className="px-1 py-4 text-sm whitespace-nowrap">
+                  <div className="text-gray-700 dark:text-gray-200">
+                    <button
+                      className="bg-green-400 dark:bg-green-500 text-gray-700 dark:text-gray-700 font-bold py-2 px-4 rounded-full inline-flex items-center"
+                      onClick={addToken}
+                    >
+                      Add me
+                    </button>
                   </div>
                 </td>
               </tr>

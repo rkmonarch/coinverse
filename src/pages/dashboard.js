@@ -1,8 +1,8 @@
 import React from "react";
+import Head from "next/head";
 import Layout from "@/components/layout";
 import Image from "next/image";
 import Link from "next/link";
-import { color } from "framer-motion";
 import Table from "@/components/table";
 import { contractAddress } from "@/utils/constants";
 import ABI from "../utils/ABI.json";
@@ -10,12 +10,11 @@ import { useAccount, useContractRead } from "wagmi";
 
 import { useState,useEffect } from "react";
 
-const Card = ({ title, img, link, color }) => {
-  
+const Card = ({ heading, title, img, link, color }) => {
   return (
     <div className="w-[90%] md:w-1/3 flex flex-col">
       <h1 className="text-[#9f9f9f] font-bold text-sm pl-5 pb-3 dark:text-[#605e8a]">
-        LAUNCH A COMMUNITY TOKEN
+        {heading}
       </h1>
       <Link
         href={link}
@@ -29,7 +28,7 @@ const Card = ({ title, img, link, color }) => {
         <div className="flex mx-auto justify-center w-[100%]">
           <Image
             src={img}
-            width="150"
+            width="120"
             height="100"
             alt="Icon"
             className=" transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-150 duration-300"
@@ -79,6 +78,12 @@ const Dashboard = () => {
 
   return (
     <Layout>
+      <Head>
+        <title>Dashboard</title>
+        <meta name="description" content="coinverse" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <div className="flex flex-col w-full pl-[80px] lg:pl-0 pb-10 md:pr-5">
         <div className="flex space-x-2 items-center mb-10 justify-center md:justify-start">
           <Image src="/dashboard-icon.svg" width="25" height="25" alt="Icon" />
@@ -88,21 +93,24 @@ const Dashboard = () => {
         </div>
         <div className="flex flex-col md:flex-row items-center space-y-4 md:space-x-4 md:space-y-0 md:items-start md:justify-start">
           <Card
+            heading="LAUNCH A COMMUNITY TOKEN"
             link="/token"
             title="TOKEN"
-            img="/tokens.webp"
+            img="/token.png"
             color="bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 "
           />
           <Card
-            link="/dashboard"
+            heading="CREATE TOKEN DISTRIBUTIONS"
+            link="/coming-soon"
             title="AIRDROP"
             img="/airdrop.webp"
             color="bg-gradient-to-r from-blue-400 to-emerald-400"
           />
           <Card
-            link="/dashboard"
+            heading="CREATE A NFT MARKETPLACE"
+            link="/coming-soon"
             title="NFT MEMBERSHIP"
-            img="/membership.webp"
+            img="/membership.png"
             color="bg-gradient-to-r from-red-800 via-yellow-600 to-yellow-500"
           />
         </div>
