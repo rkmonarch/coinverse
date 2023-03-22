@@ -6,8 +6,6 @@ import "./NFT.sol";
 
 error ONLY_ONWER_CAN_CALL();
 error SEND_SUFFICIENT_ETH();
-// error NOT_ENOUGH_BALANCE();
-// error TRANSFER_FAILED();
 
 contract LaunchPad {
 
@@ -119,7 +117,7 @@ contract LaunchPad {
             _whiteListAddresses
         );
         // Increment the number of Tokens Created
-        numOfTokensCreated++;
+        ++numOfTokensCreated;
 
         // Add token data to the mapping
         allTokenData[_creator].push(
