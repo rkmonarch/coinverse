@@ -33,7 +33,8 @@ contract Token is ERC20 {
         require(totalTokenMinted <= totalCap,"Limit exceed");
         _mint(_creator, totalTokenMinted);
 
-        for(uint i=0; i < _whiteListAddresses.length; i++){
+        uint8 length = uint8(_whiteListAddresses.length);
+        for(uint8 i=0; i < length; i++){
             whiteListed[_whiteListAddresses[i]] = true;
         }
     }
