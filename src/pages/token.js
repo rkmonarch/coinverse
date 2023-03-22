@@ -1,10 +1,16 @@
 import React, { useEffect } from "react";
 import Layout from "@/components/layout";
 import Image from "next/image";
+import Head from "next/head";
 import { useState } from "react";
 import Input from "@/components/form-elements/input";
 import Button from "@/components/form-elements/button";
-import { useAccount, useContractWrite, usePrepareContractWrite, useWaitForTransaction } from "wagmi";
+import {
+  useAccount,
+  useContractWrite,
+  usePrepareContractWrite,
+  useWaitForTransaction,
+} from "wagmi";
 import ABI from "../utils/ABI.json";
 import { useToast } from "@chakra-ui/react";
 import { contractAddress } from "@/utils/constants";
@@ -29,9 +35,12 @@ const Dashboard = () => {
     functionName: "CreateToken",
     args: [address, name, symbol, capFlag, parseInt(totalCap), supplyFlag, parseInt(supply), whitelist], 
     onError: (error) => {
-      console.log("error", error);
-    }
-  })
+      console.log("Error", error);
+    },
+    onSuccess: (result) => {
+      console.log("Success", result);
+    },
+  });
 
   const { data, write, error } = useContractWrite(config);
 
@@ -62,6 +71,12 @@ const Dashboard = () => {
 
   return (
     <Layout>
+      <Head>
+        <title>Create Token</title>
+        <meta name="description" content="coinverse" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <div className="flex flex-col space-y-8 justify-center items-center max-w-[800px] mx-auto pb-32 pl-[60px] lg:pl-0">
         <div className="flex items-center w-[90%] md:w-full bg-gradient-to-r from-emerald-500 to-lime-600 rounded-[30px] overflow-hidden shadow-lg">
           <div className="hidden md:flex mx-auto justify-center">
@@ -75,7 +90,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <form className="flex flex-col space-y-3 w-[90%] md:max-w-[600px] mx-auto" >
+        <form className="flex flex-col space-y-3 w-[90%] md:max-w-[600px] mx-auto">
           <Input
             id="name"
             name="name"
@@ -130,11 +145,11 @@ const Dashboard = () => {
             }}
             helper="Only whitelisted addresses will be able to mint your token."
           />
-          <Button label="Create" onClick={
-            (e) => {
+          <Button
+            label="Create"
+            onClick={(e) => {
               e.preventDefault();
               write();
-              
             }
           }/>
         </form>
