@@ -4,7 +4,7 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 
 error NFT_SOLD_OUT();
-error SEND_SUFFICENT_FIL();
+error SEND_MORE_MONEY();
 error ONLY_OWNER_CAN_CALL();
 error NOT_ENOUGH_BALANCE();
 error TRANSFER_FAILED();
@@ -21,22 +21,22 @@ contract NFT is ERC1155 {
     uint public counter;
     // variable to store the NFT Price;
     uint public nftPrice;
-    // variable to store factoryContract Address
-    address payable public factoryContractAddress;
+    // variable to store launchpad Address
+    address payable public launchpadAddress;
     // variable to store owner Address
     address payable public owner;
 
     /**
      * @dev contructor to set the _uri(metadata), maxSupply , Price of NFT 
      * @param _uri get the metadata of NFT
-     * @param _supply get the maxSupply, total number of NFT
+     * @param _maxSupply get the maxSupply, total number of NFT
      * @param _nftPrice get the price of NFT
      */
-    constructor(string memory _uri, uint256 _supply , uint _nftPrice, address _factoryContractAddress, address _creatorAddress) ERC1155(_uri){
+    constructor(string memory _uri, uint256 _maxSupply , uint _nftPrice, address _launchpadAddress, address _creatorAddress) ERC1155(_uri){
         _setURI(_uri);
-        maxSupply = _supply;
+        maxSupply = _maxSupply;
         nftPrice = _nftPrice;
-        factoryContractAddress = payable(_factoryContractAddress);
+        launchpadAddress = payable(_launchpadAddress);
         owner = payable(_creatorAddress);
     }
 
@@ -48,7 +48,7 @@ contract NFT is ERC1155 {
             revert NFT_SOLD_OUT();
         }
         if(msg.value < nftPrice) {
-            revert SEND_SUFFICENT_FIL();
+            revert SEND_MORE_MONEY();
         }
         ++counter;
         _mint(msg.sender, 0 , 1, "");
@@ -56,15 +56,15 @@ contract NFT is ERC1155 {
     }
 
     /**
-     * @dev supportCreator() function to mint and sell as many NFT user want NFT
+     * @dev multipleNftMint() function to mint and sell as many NFT user want NFT
      * @param _num get the amount of NFT user want to mint and BUY
      */
-    function supportCreator(uint _num) public payable{
+    function multipleNftMint(uint _num) public payable{
         if(counter + _num > maxSupply){
             revert NFT_SOLD_OUT();
         }
         if(msg.value < nftPrice * _num) {
-            revert SEND_SUFFICENT_FIL();
+            revert SEND_MORE_MONEY();
         }
         counter += _num;
         _mint(msg.sender, 0 , _num, "");
@@ -72,7 +72,7 @@ contract NFT is ERC1155 {
     }
 
     /**
-     * @dev withdraw(): function to withdraw contract balance 
+     * @notice withdraw(): function to withdraw contract balance 
      * @param _amount : amount courseowner want to withdraw
      * @param _withdrawAddress : address courseowner wants to withdraw to
      */
@@ -84,9 +84,9 @@ contract NFT is ERC1155 {
             revert NOT_ENOUGH_BALANCE();
         }
 
-        // sending money to factory owner
+        // sending money to launchpad contract
         uint commissionAmount = (_amount * 5) / 100; 
-        (bool success, ) = factoryContractAddress.call{value: commissionAmount }("");
+        (bool success, ) = launchpadAddress.call{value: commissionAmount }("");
         if(!success){
             revert TRANSFER_FAILED();
         }
@@ -101,6 +101,12 @@ contract NFT is ERC1155 {
         emit WithdrawMoney(_withdrawAddress, _amount);
     }
 
+    function setNftPrice(uint _newNftPrice) public {
+        nftPrice = _newNftPrice;
+    }
+
+    //-------------------- view functions -------------------------------
+
     // get the balance of the contract
     function getContractBalance() public view returns (uint256) {
         return address(this).balance;
@@ -112,10 +118,9 @@ contract NFT is ERC1155 {
     }
 
     // get the address of contract owner
-    function getAddressOfFactoryCourseOwner() public view returns (address) {
+    function getAddressOfOwner() public view returns (address) {
         return owner;
     }
-    
 
     // receive function is used to receive Ether when msg.data is empty
     receive() external payable {}
