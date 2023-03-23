@@ -14,7 +14,8 @@ import {
 import ABI from "../utils/ABI.json";
 import { useToast } from "@chakra-ui/react";
 import { contractAddress } from "@/utils/constants";
-import { Checkbox, CheckboxGroup } from '@chakra-ui/react'
+import { Checkbox, CheckboxGroup } from "@chakra-ui/react";
+import { BigNumber } from "ethers";
 
 const Dashboard = () => {
   const [name, setName] = useState("");
@@ -22,8 +23,8 @@ const Dashboard = () => {
   const [supply, setSupply] = useState("");
   const [totalCap, setTotalCap] = useState("");
   const [whitelist, setWhitelist] = useState([]);
-  const [capFlag, setCapFlag] = useState(false);
-  const [supplyFlag, setSupplyFlag] = useState(false);
+  const [capFlag, setCapFlag] = useState(true);
+  const [supplyFlag, setSupplyFlag] = useState(true);
 
   const { address } = useAccount();
 
@@ -33,7 +34,19 @@ const Dashboard = () => {
     address: contractAddress,
     abi: ABI,
     functionName: "CreateToken",
-    args: [address, name, symbol, capFlag, parseInt(totalCap), supplyFlag, parseInt(supply), whitelist], 
+    args: [
+      address,
+      name,
+      symbol,
+      capFlag,
+      totalCap,
+      supplyFlag,
+      supply,
+      whitelist,
+    ],
+    overrides: {
+      value: 1000,
+    },
     onError: (error) => {
       console.log("Error", error);
     },
@@ -44,7 +57,7 @@ const Dashboard = () => {
 
   const { data, write, error } = useContractWrite(config);
 
-  const { isSuccess } = useWaitForTransaction({hash: data?.hash});
+  const { isSuccess } = useWaitForTransaction({ hash: data?.hash });
 
   useEffect(() => {
     console.log("isSuccess", isSuccess);
@@ -68,6 +81,10 @@ const Dashboard = () => {
       });
     }
   }, [isSuccess, error]);
+
+  useEffect(() => {
+    console.log(capFlag, supplyFlag);
+  }, [supply, totalCap]);
 
   return (
     <Layout>
@@ -109,10 +126,13 @@ const Dashboard = () => {
             onChange={(e) => setSymbol(e.target.value)}
             helper="Your Token Symbol (1-7 Characters), No '$' Sign Required."
           />
-          <Checkbox 
-          onClick={(e) => setCapFlag(e.target.checked)}
-          defaultChecked>Set Total Cap</Checkbox>
-           <Input
+          <Checkbox
+            onChange={(e) => setCapFlag(e.target.checked)}
+            defaultChecked
+          >
+            Set Total Cap
+          </Checkbox>
+          <Input
             id="supply"
             name="supply"
             label="Total Cap"
@@ -121,9 +141,12 @@ const Dashboard = () => {
             onChange={(e) => setTotalCap(e.target.value)}
             helper="Recommended Supply - 10 Million Tokens."
           />
-           <Checkbox 
-          onClick={(e) => setSupplyFlag(e.target.checked)}
-          defaultChecked>Set Initial Supply</Checkbox>
+          <Checkbox
+            onChange={(e) => setSupplyFlag(e.target.checked)}
+            defaultChecked
+          >
+            Set Initial Supply
+          </Checkbox>
           <Input
             id="supply"
             name="supply"
@@ -150,8 +173,8 @@ const Dashboard = () => {
             onClick={(e) => {
               e.preventDefault();
               write();
-            }
-          }/>
+            }}
+          />
         </form>
       </div>
     </Layout>

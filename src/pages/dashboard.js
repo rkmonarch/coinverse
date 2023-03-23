@@ -42,8 +42,8 @@ const Card = ({ heading, title, img, link, color }) => {
 const headers = [
   "Name",
   "Symbol",
-  "Total Supply",
-  "Total Cap"
+  "Total Supply (in Wei)",
+  "Total Cap (in Wei)",
 ]
 
 
@@ -69,6 +69,7 @@ const Dashboard = () => {
             symbol: item.symbol,
             totalSupply: parseInt(item.initialMint).toString(),
             totalCap: parseInt(item.totalCap).toString(),
+            tokenAddress: item.tokenAddress
           })
       });
       setProductData(tokensData);
