@@ -2,10 +2,12 @@
 pragma solidity ^0.8.9;
 
 import "./Token.sol";
-import "./NFT.sol";
 
 error ONLY_ONWER_CAN_CALL();
 error SEND_SUFFICIENT_ETH();
+error NOT_ENOUGH_BALANCE();
+error TRANSFER_FAILED();
+
 
 contract LaunchPad {
 
@@ -19,29 +21,10 @@ contract LaunchPad {
     // number of Tokens Created
     uint256 private numOfTokensCreated;
 
-    // number of NFT Created
-    uint256 private numOfNftCreated;
-
     // Amount to pay to create token
     uint256 private tokenCreationPrice;
 
-    // Cap for Maximum NFT Minted
-    uint256 private nftMaxSupply;
-
-    // events
-    event CreateNewNft(string uri, uint supply, uint nftPrice, address factoryContractAddress, address indexed nftAddress);
     event WithdrawMoney(address withdrawAddress, uint amount);
-
-    /**
-     * @notice struct to store all the data of NFT ( string uri, uint supply, uint nftPrice) and launchPadOwner(address launchPadOwner) contract
-     */
-    struct NftStruct {
-        string uri;
-        uint supply;
-        uint nftPrice;
-        address launchPadAddress;
-        address creator;
-    }
 
     // struct to store all the data of Token and LaunchPad contract
     struct TokenStruct {
@@ -60,18 +43,9 @@ contract LaunchPad {
     // searching the struct data of Token and LaunchPad using creator address
     mapping(address => TokenStruct[]) public allTokenData;
 
-    /**
-     * @notice searching the struct data of NFT and LaunchPad using owner address
-     */
-    mapping(address => NftStruct) public allNftData;
-
     // creator address to check the addresses of token created
     // creator => token addresses
     mapping(address => address[]) public tokenAddresses;
-
-    // creator address to check the addresses of nft created
-    // creator => NFT addresses
-    mapping(address => address[]) public nftAddresses;
 
     // modifier to allow onwer to call the function
     modifier onlyOwner() {
@@ -143,49 +117,6 @@ contract LaunchPad {
     }
 
     /**
-     * @dev : function to create new course and course address on searchBy Address
-     * @param _uri : NFT URI
-     * @param _maxSupply : Total supply of NFTs
-     * @param _nftPrice : Price of the NFT
-     * @param _creatorAddress : Address of the Creator
-     */
-    function createNFT(string memory _uri, uint256 _maxSupply , bool _wantMaxSupply, uint _nftPrice, address _creatorAddress) public {
-        nftMaxSupply = _maxSupply;
-
-        if(_wantMaxSupply == false){
-            nftMaxSupply = type(uint256).max;
-        }
-
-        NFT nft = new NFT(
-            _uri,
-            nftMaxSupply,
-            _nftPrice,
-            address(this),
-            _creatorAddress
-        );
-    
-        // Increment the number of NFT
-        ++numOfNftCreated;
-
-        // emit CreateNewCourse event
-        emit CreateNewNft(_uri, _maxSupply, _nftPrice, address(this), _creatorAddress);
-
-        // Add the new NFT to the mapping
-        allNftData[_creatorAddress] = (
-            NftStruct(
-                _uri,
-                _maxSupply,
-                _nftPrice,
-                address(this),
-                _creatorAddress
-            )
-        );
-        
-        // search the profile by using creator address
-        nftAddresses[_creatorAddress].push(address(nft));
-    }
-
-    /**
      * @dev function to set new onwer
      * @param _newOnwer address of new onwer
      */
@@ -198,9 +129,9 @@ contract LaunchPad {
     }
 
     // function to withdraw the funds from Launchpad contract
-    function withdraw(uint256 _amount, address _receiver) external payable onlyOwner{
+    function withdraw(uint256 _amount, address _receiver) payable external onlyOwner {
         if(msg.sender != launchPadOwner){
-            revert ONLY_OWNER_CAN_CALL();
+            revert ONLY_ONWER_CAN_CALL();
         }
        
         if(address(this).balance < _amount){
@@ -211,6 +142,7 @@ contract LaunchPad {
         if(!success){
             revert TRANSFER_FAILED();
         }
+        emit WithdrawMoney(_receiver , _amount);
     }
 
 
@@ -237,11 +169,6 @@ contract LaunchPad {
     // get the price of the token
     function getTokenCreationPrice() public view returns(uint){
         return tokenCreationPrice;
-    }
-
-    // get the number of NFT Created
-    function getNftCreated() public view returns(uint){
-        return numOfNftCreated;
     }
 
     // receive function is used to receive Ether when msg.data is empty
