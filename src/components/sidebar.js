@@ -1,8 +1,10 @@
 import React from "react";
 import Link from "next/link";
 import { Tooltip } from "@chakra-ui/react";
-import { BiWalletAlt } from "react-icons/bi";
-import { AiOutlineDashboard } from "react-icons/ai";
+import { HiUserGroup } from "react-icons/hi";
+import { AiOutlineHome } from "react-icons/ai";
+import { MdSpaceDashboard } from "react-icons/md"
+import { RiCustomerService2Fill } from "react-icons/ri"
 
 const Sidebar = () => {
   return (
@@ -10,23 +12,43 @@ const Sidebar = () => {
       <div>
         <ul className="flex flex-col items-center justify-center space-y-4 w-full">
           <li className="w-[80%] border-b text-[#666666] border-[#666666] flex justify-center pb-4 dark:text-[#605e8a] dark:border-[#605e8a]">
+            <Tooltip label="HOME" fontSize="md" placement="right">
+              <Link
+                href="/"
+                className="flex justify-center sm:justify-start items-center py-2"
+              >
+                <AiOutlineHome size={25} />
+              </Link>
+            </Tooltip>
+          </li>
+          <li className="w-[80%] border-b text-[#666666] border-[#666666] flex justify-center pb-4 dark:text-[#605e8a] dark:border-[#605e8a]">
             <Tooltip label="DASHBOARD" fontSize="md" placement="right">
               <Link
                 href="dashboard"
                 className="flex justify-center sm:justify-start items-center py-2"
               >
-                <AiOutlineDashboard size={25} />
+                <MdSpaceDashboard size={25} />
               </Link>
             </Tooltip>
           </li>
           <li className="w-[80%] border-b text-[#666666] border-[#666666] flex justify-center pb-4 dark:text-[#605e8a] dark:border-[#605e8a]">
-            <Tooltip label="CONNECT WALLET" fontSize="md" placement="right">
-              <button
+            <Tooltip label="COMMUNITY" fontSize="md" placement="right">
+              <Link
+                href="coming-soon"
                 className="flex justify-center sm:justify-start items-center py-2"
-                onClick={() => {}}
               >
-                <BiWalletAlt size={25} />
-              </button>
+                <HiUserGroup size={25} />
+              </Link>
+            </Tooltip>
+          </li>
+          <li className="w-[80%] border-b text-[#666666] border-[#666666] flex justify-center pb-4 dark:text-[#605e8a] dark:border-[#605e8a]">
+            <Tooltip label="SUPPORT" fontSize="md" placement="right">
+              <Link
+                href="/support"
+                className="flex justify-center sm:justify-start items-center py-2"
+              >
+                <RiCustomerService2Fill size={25} />
+              </Link>
             </Tooltip>
           </li>
         </ul>

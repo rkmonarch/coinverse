@@ -18,7 +18,7 @@
 			},
 			{
 				"internalType": "bool",
-				"name": "_setTotalCap",
+				"name": "_wantTotalCap",
 				"type": "bool"
 			},
 			{
@@ -44,7 +44,7 @@
 		],
 		"name": "CreateToken",
 		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
@@ -53,10 +53,87 @@
 				"internalType": "address",
 				"name": "_launchPadOwner",
 				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_tokenCreationPrice",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
+	},
+	{
+		"inputs": [],
+		"name": "NOT_ENOUGH_BALANCE",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "ONLY_ONWER_CAN_CALL",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "SEND_SUFFICIENT_ETH",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_newOnwer",
+				"type": "address"
+			}
+		],
+		"name": "setNewOwner",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_newTokenCreationPrice",
+				"type": "uint256"
+			}
+		],
+		"name": "setNewPrice",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "TRANSFER_FAILED",
+		"type": "error"
+	},
+	{
+		"stateMutability": "payable",
+		"type": "fallback"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_amount",
+				"type": "uint256"
+			},
+			{
+				"internalType": "address",
+				"name": "_receiver",
+				"type": "address"
+			}
+		],
+		"name": "withdraw",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"stateMutability": "payable",
+		"type": "receive"
 	},
 	{
 		"inputs": [
@@ -64,6 +141,11 @@
 				"internalType": "address",
 				"name": "",
 				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"name": "allData",
@@ -75,61 +157,7 @@
 			},
 			{
 				"internalType": "address",
-				"name": "creator",
-				"type": "address"
-			},
-			{
-				"internalType": "string",
-				"name": "name",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "symbol",
-				"type": "string"
-			},
-			{
-				"internalType": "bool",
-				"name": "setTotalCap",
-				"type": "bool"
-			},
-			{
-				"internalType": "uint256",
-				"name": "totalCap",
-				"type": "uint256"
-			},
-			{
-				"internalType": "bool",
-				"name": "wantInitialMint",
-				"type": "bool"
-			},
-			{
-				"internalType": "uint256",
-				"name": "initialMint",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "allTokens",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "launchPadAddress",
+				"name": "tokenAddress",
 				"type": "address"
 			},
 			{
@@ -149,7 +177,7 @@
 			},
 			{
 				"internalType": "bool",
-				"name": "setTotalCap",
+				"name": "wantTotalCap",
 				"type": "bool"
 			},
 			{
@@ -198,6 +226,19 @@
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "getTokenCreationPrice",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "address",
@@ -235,6 +276,11 @@
 					},
 					{
 						"internalType": "address",
+						"name": "tokenAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
 						"name": "creator",
 						"type": "address"
 					},
@@ -250,7 +296,7 @@
 					},
 					{
 						"internalType": "bool",
-						"name": "setTotalCap",
+						"name": "wantTotalCap",
 						"type": "bool"
 					},
 					{
@@ -284,7 +330,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "numOfTokensCreated",
+		"name": "getTotalToken",
 		"outputs": [
 			{
 				"internalType": "uint256",
