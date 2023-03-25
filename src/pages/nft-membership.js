@@ -30,34 +30,7 @@ const Dashboard = () => {
 
   const { address } = useAccount();
 
-
-const toast = useToast();
-  const createMetadata = async () => {
-    var metadata = {
-      "name": name,
-      "description": description,
-      "image": imageUrl,
-    };
-    console.log(metadata);
-    const client = new Web3Storage({ token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDkxZTRjOEMwNTJiMzkzNEQ3Nzc5NWM3QWQ3MkQ0MTFhMGQyMWUxODIiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NzE2ODYwNTU1NjIsIm5hbWUiOiJNYXRpYy1Qcm9maWxlIn0.zDWjIoqZUCnPXtvWXjm_ZbvPN2ZZHTfcK7JHdM2S7hk' });
-    client
-      .put([new File([JSON.stringify(metadata)], 'metadata.json')])
-      .then(async (cid) => {
-        console.log(cid);
-        const link = `https://${cid}.ipfs.w3s.link/metadata.json`;
-        setUri(link);
-
-        console.log(link);
-        
-      });
-
-  }
-
-  useEffect(() => {
-    if (uri != "") {
-      write();
-    }
-  }, [uri]);
+  const toast = useToast();
 
   const { config } = usePrepareContractWrite({
     address: NFTContractAddress,
@@ -68,13 +41,14 @@ const toast = useToast();
       supply,
       maxSupplyFlag == true ? 0 : 1,
       parseInt(price),
-      address
+      address,
     ],
-   
+
     onError: (error) => {
       console.log("Error", error);
     },
     onSuccess: (result) => {
+      console.log(uri, supply, maxSupplyFlag == true ? 0 : 1, price, address);
       console.log("Success", result);
     },
   });
@@ -82,6 +56,24 @@ const toast = useToast();
   const { data, write, error } = useContractWrite(config);
 
   const { isSuccess } = useWaitForTransaction({ hash: data?.hash });
+
+  const createMetadata = () => {
+    var metadata = {
+      name: name,
+      description: description,
+      image: imageUrl,
+    };
+    console.log(metadata);
+    const client = new Web3Storage({
+      token:
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDkxZTRjOEMwNTJiMzkzNEQ3Nzc5NWM3QWQ3MkQ0MTFhMGQyMWUxODIiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NzE2ODYwNTU1NjIsIm5hbWUiOiJNYXRpYy1Qcm9maWxlIn0.zDWjIoqZUCnPXtvWXjm_ZbvPN2ZZHTfcK7JHdM2S7hk",
+    });
+    client
+      .put([new File([JSON.stringify(metadata)], "metadata.json")])
+      .then(async (cid) => {
+        setUri(`https://${cid}.ipfs.w3s.link/metadata.json`);
+      });
+  };
 
   useEffect(() => {
     console.log("isSuccess", isSuccess);
@@ -197,13 +189,22 @@ const toast = useToast();
             helper="Recommend initial NFT Price - 2 5IRE, No '5IRE' Symbol Required."
           />
           <button
-            onClick={(e) => {
-
+            onClick={async (e) => {
               e.preventDefault();
               createMetadata();
             }}
             className="w-full text-[#fffff] bg-violet-500 hover:bg-violet-600 focus:ring-1 focus:outline-none focus:ring-[#cfcfcf] font-medium rounded-lg text-sm px-5 py-2.5 text-center shadow-none dark:bg-violet-500 dark:hover:bg-violet-600 dark:text-gray-100"
           >
+            Upload
+          </button>
+          <button
+            onClick={async (e) => {
+              e.preventDefault();
+              write();
+            }}
+            className="w-full text-[#fffff] bg-violet-500 hover:bg-violet-600 focus:ring-1 focus:outline-none focus:ring-[#cfcfcf] font-medium rounded-lg text-sm px-5 py-2.5 text-center shadow-none dark:bg-violet-500 dark:hover:bg-violet-600 dark:text-gray-100"
+          >
+            {" "}
             Create
           </button>
         </form>
