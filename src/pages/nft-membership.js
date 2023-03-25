@@ -13,8 +13,9 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 import ABI from "../utils/ABI.json";
+import NFTABI from "../utils/NFTABI.json";
 import { useToast } from "@chakra-ui/react";
-import { contractAddress } from "@/utils/constants";
+import { contractAddress, NFTContractAddress } from "@/utils/constants";
 import { Checkbox, CheckboxGroup } from "@chakra-ui/react";
 
 const Dashboard = () => {
@@ -24,19 +25,46 @@ const Dashboard = () => {
   const [imageUrl, setImageUrl] = useState("");
   const [image, setImage] = useState("");
   const [price, setPrice] = useState();
+  const [uri, setUri] = useState("");
+  const [maxSupplyFlag, setMaxSupplyFlag] = useState(true);
 
   const { address } = useAccount();
 
-  const toast = useToast();
+
+const toast = useToast();
+  const createMetadata = async () => {
+    var metadata = {
+      "name": name,
+      "description": description,
+      "image": imageUrl,
+    };
+    console.log(metadata);
+    const client = new Web3Storage({ token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDkxZTRjOEMwNTJiMzkzNEQ3Nzc5NWM3QWQ3MkQ0MTFhMGQyMWUxODIiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NzE2ODYwNTU1NjIsIm5hbWUiOiJNYXRpYy1Qcm9maWxlIn0.zDWjIoqZUCnPXtvWXjm_ZbvPN2ZZHTfcK7JHdM2S7hk' });
+    client
+      .put([new File([JSON.stringify(metadata)], 'metadata.json')])
+      .then(async (cid) => {
+        console.log(cid);
+        const link = `https://${cid}.ipfs.w3s.link/metadata.json`;
+        setUri(link);
+
+        console.log(link);
+        write();
+      });
+
+  }
 
   const { config } = usePrepareContractWrite({
-    address: contractAddress,
-    abi: ABI,
-    functionName: "CreateNFT",
-    args: [address, supply, price],
-    overrides: {
-      value: 1000,
-    },
+    address: NFTContractAddress,
+    abi: NFTABI,
+    functionName: "createNFT",
+    args: [
+      uri,
+      supply,
+      maxSupplyFlag == true ? 0 : 1,
+      parseInt(price),
+      address
+    ],
+   
     onError: (error) => {
       console.log("Error", error);
     },
@@ -54,8 +82,8 @@ const Dashboard = () => {
     console.log("error", error);
     if (isSuccess) {
       toast({
-        title: "Token Created",
-        description: "Your token has been created successfully",
+        title: "NFT Created",
+        description: "Your NFT has been created successfully",
         status: "success",
         duration: 5000,
         isClosable: true,
@@ -94,32 +122,32 @@ const Dashboard = () => {
           </div>
         </div>
         <form className="flex flex-col space-y-3 w-[90%] md:max-w-[600px] mx-auto">
-            <Upload
-              id="image"
-              name="image"
-              label="Image"
-              type="file"
-              onChange={(e) => {
-                const image = URL.createObjectURL(e.target.files[0]);
-                setImage(image);
-                const files = e.target.files;
-                const client = new Web3Storage({
-                  token:
-                    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDkxZTRjOEMwNTJiMzkzNEQ3Nzc5NWM3QWQ3MkQ0MTFhMGQyMWUxODIiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NzE2ODYwNTU1NjIsIm5hbWUiOiJNYXRpYy1Qcm9maWxlIn0.zDWjIoqZUCnPXtvWXjm_ZbvPN2ZZHTfcK7JHdM2S7hk",
-                });
-                client.put(files).then((cid) => {
-                  console.log(cid);
-                  setImageUrl(`https://${cid}.ipfs.w3s.link/${files[0].name}`);
-                });
-              }}
-            />
-            <Image
-              className="mx-auto"
-              src={image !== "" ? image : "/preview.png"}
-              alt="preview"
-              width={200}
-              height={200}
-            />
+          <Upload
+            id="image"
+            name="image"
+            label="Image"
+            type="file"
+            onChange={(e) => {
+              const image = URL.createObjectURL(e.target.files[0]);
+              setImage(image);
+              const files = e.target.files;
+              const client = new Web3Storage({
+                token:
+                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDkxZTRjOEMwNTJiMzkzNEQ3Nzc5NWM3QWQ3MkQ0MTFhMGQyMWUxODIiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NzE2ODYwNTU1NjIsIm5hbWUiOiJNYXRpYy1Qcm9maWxlIn0.zDWjIoqZUCnPXtvWXjm_ZbvPN2ZZHTfcK7JHdM2S7hk",
+              });
+              client.put(files).then((cid) => {
+                console.log(cid);
+                setImageUrl(`https://${cid}.ipfs.w3s.link/${files[0].name}`);
+              });
+            }}
+          />
+          <Image
+            className="mx-auto"
+            src={image !== "" ? image : "/preview.png"}
+            alt="preview"
+            width={200}
+            height={200}
+          />
           <Input
             id="name"
             name="name"
@@ -164,8 +192,9 @@ const Dashboard = () => {
           />
           <button
             onClick={(e) => {
+
               e.preventDefault();
-              write();
+              createMetadata();
             }}
             className="w-full text-[#fffff] bg-violet-500 hover:bg-violet-600 focus:ring-1 focus:outline-none focus:ring-[#cfcfcf] font-medium rounded-lg text-sm px-5 py-2.5 text-center shadow-none dark:bg-violet-500 dark:hover:bg-violet-600 dark:text-gray-100"
           >
