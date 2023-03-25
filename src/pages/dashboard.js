@@ -8,7 +8,7 @@ import { contractAddress } from "@/utils/constants";
 import ABI from "../utils/ABI.json";
 import { useAccount, useContractRead } from "wagmi";
 
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const Card = ({ heading, title, img, link, color }) => {
   return (
@@ -44,12 +44,10 @@ const headers = [
   "Symbol",
   "Total Supply (in Wei)",
   "Total Cap (in Wei)",
-]
-
-
+  "",
+];
 
 const Dashboard = () => {
-
   const [productData, setProductData] = useState([{}]);
   const { address } = useAccount();
 
@@ -59,23 +57,22 @@ const Dashboard = () => {
     functionName: "getTokensWithMetadataCreatedByCreator",
     args: [address],
   });
-  
+
   useEffect(() => {
     if (data) {
-      let tokensData = []
+      let tokensData = [];
       data.map((item) => {
         tokensData.push({
-            name: item.name,
-            symbol: item.symbol,
-            totalSupply: parseInt(item.initialMint).toString(),
-            totalCap: parseInt(item.totalCap).toString(),
-            tokenAddress: item.tokenAddress
-          })
+          name: item.name,
+          symbol: item.symbol,
+          totalSupply: parseInt(item.initialMint).toString(),
+          totalCap: parseInt(item.totalCap).toString(),
+          tokenAddress: item.tokenAddress,
+        });
       });
       setProductData(tokensData);
     }
   }, [data]);
-
 
   return (
     <Layout>
@@ -109,7 +106,7 @@ const Dashboard = () => {
           />
           <Card
             heading="CREATE A NFT MARKETPLACE"
-            link="/coming-soon"
+            link="/nft-membership"
             title="NFT MEMBERSHIP"
             img="/membership.png"
             color="bg-gradient-to-r from-red-800 via-yellow-600 to-yellow-500"
@@ -117,7 +114,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div>
-        <Table headers={headers} data={productData} />  
+        <Table headers={headers} data={productData} />
       </div>
     </Layout>
   );

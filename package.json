@@ -25,7 +25,8 @@
     "react-animation-on-scroll": "^5.1.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.8.0",
-    "wagmi": "^0.10.15"
+    "wagmi": "^0.10.15",
+    "web3.storage": "^4.5.4"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",

@@ -67,7 +67,10 @@ const Support = () => {
                   <Text mt={{ sm: 1, md: 1, lg: 2 }} color="gray.600">
                     Fill up the form below to contact
                   </Text>
-                  <Box py={{ base: 5, sm: 5, md: 8, lg: 12 }} alignItems="flex-start">
+                  <Box
+                    py={{ base: 5, sm: 5, md: 8, lg: 12 }}
+                    alignItems="flex-start"
+                  >
                     <VStack pl={0} spacing={1} alignItems="flex-start">
                       <Button
                         size="md"
@@ -141,20 +144,18 @@ const Support = () => {
                       <FormControl id="name">
                         <FormLabel>Your Name</FormLabel>
                         <InputGroup borderColor="#E0E1E7">
-                          <InputLeftElement
-                            pointerEvents="none"
-                            children={<BsPerson color="gray.800" />}
-                          />
+                          <InputLeftElement pointerEvents="none">
+                            <BsPerson color="gray.800" />
+                            </InputLeftElement>
                           <Input type="text" size="md" placeholder="John Doe" />
                         </InputGroup>
                       </FormControl>
                       <FormControl id="name">
                         <FormLabel>E-Mail</FormLabel>
                         <InputGroup borderColor="#E0E1E7">
-                          <InputLeftElement
-                            pointerEvents="none"
-                            children={<MdOutlineEmail color="gray.800" />}
-                          />
+                          <InputLeftElement pointerEvents="none">
+                            <MdOutlineEmail color="gray.400" />
+                          </InputLeftElement>
                           <Input
                             type="text"
                             size="md"
