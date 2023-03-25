@@ -128,7 +128,7 @@ contract LaunchPadNft {
         return address(this);
     }
 
-    // get the address of Launchpad contract owner
+    // get the address of Launchpad contract owner`
     function getAddressOfLaunchpadOwner() public view returns (address) {
         return launchPadNftOwner;
     }
@@ -136,6 +136,16 @@ contract LaunchPadNft {
     // get the number of NFT Created
     function getNftCreated() public view returns(uint){
         return numOfNftCreated;
+    }
+
+    // get all NFTs with metadata by creator address
+    function getNFTsWithMetadataCreatedByCreator(address _creatorAddress) public view returns(NftStruct[] memory){
+        address[] memory _NFTAddresses = nftAddresses[_creatorAddress];
+        NftStruct[] memory _NFTs = new NftStruct[](_NFTAddresses.length);
+        for(uint i = 0; i < _NFTAddresses.length; i++){
+            _NFTs[i] = allNftData[_creatorAddress][i];
+        }
+        return _NFTs;
     }
 
     // receive function is used to receive Ether when msg.data is empty
