@@ -98,7 +98,7 @@ export default function Home() {
                 </p>
               </AnimationOnScroll>
               <AnimationOnScroll animateIn="animate__slideInRight">
-                <GradientButton link="/dashboard" title="Get in Touch" />
+                <GradientButton link="/support" title="Get in Touch" />
               </AnimationOnScroll>
             </div>
           </div>

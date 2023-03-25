@@ -22,8 +22,9 @@ const Input = ({
         name={name}
         onChange={onChange}
         variant="outline" 
-        className="mt-0 text-gray-700 dark:text-white dark:border-[#605e8a]" 
+        className="mt-0 text-gray-700 border-black dark:text-white dark:border-[#605e8a]" 
         focusBorderColor="#605e8a" 
+        borderColor="#605e8a"
         placeholder={placeholder}
         type={type}
       />
