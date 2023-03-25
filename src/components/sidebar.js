@@ -5,6 +5,7 @@ import { HiUserGroup } from "react-icons/hi";
 import { AiOutlineHome } from "react-icons/ai";
 import { MdSpaceDashboard } from "react-icons/md"
 import { RiCustomerService2Fill } from "react-icons/ri"
+import { MdOutlineExplore } from "react-icons/md"
 
 const Sidebar = () => {
   return (
@@ -48,6 +49,16 @@ const Sidebar = () => {
                 className="flex justify-center sm:justify-start items-center py-2"
               >
                 <RiCustomerService2Fill size={25} />
+              </Link>
+            </Tooltip>
+          </li>
+          <li className="w-[80%] border-b text-[#666666] border-[#666666] flex justify-center pb-4 dark:text-[#605e8a] dark:border-[#605e8a]">
+            <Tooltip label="Explore NFTs" fontSize="md" placement="right">
+              <Link
+                href="/explore"
+                className="flex justify-center sm:justify-start items-center py-2"
+              >
+                <MdOutlineExplore size={25} />
               </Link>
             </Tooltip>
           </li>

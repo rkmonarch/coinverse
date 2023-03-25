@@ -1,39 +1,81 @@
-import React from "react";
-import Image from "next/image";
+import { useEffect, useState } from "react";
+import {
+  Box,
+  Heading,
+  Text,
+  Img,
+  Flex,
+  Center,
+  useColorModeValue,
+  HStack,
+} from "@chakra-ui/react";
+import { BsArrowUpRight } from "react-icons/bs";
+import { useRouter } from "next/router";
 
-const NFTDetails = ({
-  label,
-  value,
-  type,
-}) => {
-  if (value === "" || value === undefined) value = "/registerVector.png";
+export default function NFTDetails(nftData) {
+  const { name, description, image, price } = nftData;
+
   return (
-    <div className="flex flex-row">
-      {type === "image" ? (
-        <>
-          <p className="text-md text-left font-bold title-font mb-4 text-gray-800 dark:text-white mr-2">{`${label}`}</p>
-          <Image
-            loader={() => value}
-            src={value}
-            width="400"
-            height="600"
-            alt="label"
+    <Center py={6}>
+      <Box
+        w="xs"
+        rounded={"sm"}
+        my={5}
+        mx={[0, 5]}
+        overflow={"hidden"}
+        bg="white"
+        border={"1px"}
+        borderColor="black"
+        boxShadow={useColorModeValue("6px 6px 0 black", "6px 6px 0 cyan")}
+      >
+        <Box h={"200px"} borderBottom={"1px"} borderColor="black">
+          <Img
+            src={image}
+            roundedTop={"sm"}
+            objectFit="cover"
+            h="full"
+            w="full"
+            alt={"Blog Image"}
           />
-        </>
-      ) : (
-        <>
-          <p className="text-md text-left font-bold title-font mb-4 text-gray-800 dark:text-white mr-2">{`${label}:`}</p>
-          <p className="text-md text-left font-medium title-font mb-4 text-gray-800 dark:text-white">
-            {value}
-          </p>
-        </>
-      )}
-    </div>
+        </Box>
+        <Box p={4}>
+          <Box
+            bg="black"
+            display={"inline-block"}
+            px={2}
+            py={1}
+            color="white"
+            mb={2}
+          >
+            <Text fontSize={"xs"} fontWeight="medium">
+              {price}
+            </Text>
+          </Box>
+          </Box>
+        <Box p={4}>
+          <Heading color={"black"} fontSize={"2xl"} noOfLines={1}>
+            {name}
+          </Heading>
+          <Text color={"gray.500"} noOfLines={2}>
+            {description}
+          </Text>
+        </Box>
+        <HStack borderTop={"1px"} color="black">
+          <Flex
+            p={4}
+            alignItems="center"
+            justifyContent={"space-between"}
+            roundedBottom={"sm"}
+            cursor={"pointer"}
+            w="full"
+          >
+            <Text fontSize={"md"} fontWeight={"semibold"}>
+              View more
+            </Text>
+            <BsArrowUpRight />
+          </Flex>
+        </HStack>
+      </Box>
+    </Center>
   );
-};
-
-export default NFTDetails;
-
-NFTDetails.defaultProps = {
-  type: "text",
-};
+}
