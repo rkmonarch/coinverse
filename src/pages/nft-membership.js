@@ -48,10 +48,16 @@ const toast = useToast();
         setUri(link);
 
         console.log(link);
-        write();
+        
       });
 
   }
+
+  useEffect(() => {
+    if (uri != "") {
+      write();
+    }
+  }, [uri]);
 
   const { config } = usePrepareContractWrite({
     address: NFTContractAddress,
