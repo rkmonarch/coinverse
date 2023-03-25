@@ -1,34 +1,28 @@
-import React from 'react'
-import { Checkbox as ChakraCheckbox } from '@chakra-ui/react'
+import React from "react";
+import { Checkbox as ChakraCheckbox } from "@chakra-ui/react";
 
-const Checkbox = ({
-  id,
-  name,
-  label,
-  onChange,
-  helper,
-}) => {
+const Checkbox = ({ id, name, label, onChange, helper }) => {
   return (
     <div>
-      <ChakraCheckbox 
+      <ChakraCheckbox
         id={id}
         name={name}
-        colorScheme='green' 
+        colorScheme="green"
         onClick={onChange}
         borderColor="#605e8a"
         className="text-gray-700 dark:text-white"
       >
-        {label}
+        <span>{label}</span>
       </ChakraCheckbox>
       <div className="text-sm mt-1 text-[#666666]">{helper}</div>
     </div>
-  )
-}
+  );
+};
 
-export default Checkbox
+export default Checkbox;
 
 Checkbox.defaultProps = {
-  label: '',
+  label: "",
   onchange: () => {},
-  helper: ''
-}
+  helper: "",
+};

@@ -17,7 +17,7 @@ const Upload = ({ id, name, label, type, accept, onChange }) => {
           id={id}
           name={name}
           type={type || "file"}
-          className="opacity-0 absolute left-0 max-w-auto"
+          className="opacity-0 absolute left-0 right-0 max-w-full"
           accept={accept || "image/*"}
           onChange={onChange}
         />

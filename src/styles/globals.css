@@ -5,3 +5,7 @@
 body {
   overflow-x: hidden;
 }
+
+.chakra-checkbox__label{
+  color: #6c6c6c;
+}
