@@ -40,11 +40,18 @@ contract NFT is ERC1155 {
         owner = payable(_creatorAddress);
     }
 
+    modifier onlyOwner() {
+        if(msg.sender != owner){
+            revert ONLY_OWNER_CAN_CALL();
+        }
+        _;
+    }
+
     /**
      * @dev nftMint() function to mint and sell 1 NFT
      */
     function nftMint() public payable{
-        if(++counter > maxSupply){
+        if(counter + 1 > maxSupply){
             revert NFT_SOLD_OUT();
         }
         if(msg.value < nftPrice) {
@@ -76,10 +83,7 @@ contract NFT is ERC1155 {
      * @param _amount : amount courseowner want to withdraw
      * @param _withdrawAddress : address courseowner wants to withdraw to
      */
-    function withdraw(uint _amount, address _withdrawAddress) public payable{
-        if(msg.sender != owner){
-            revert ONLY_OWNER_CAN_CALL();
-        }
+    function withdraw(uint _amount, address _withdrawAddress) public payable onlyOwner{
         if(getContractBalance() < _amount){
             revert NOT_ENOUGH_BALANCE();
         }
@@ -101,7 +105,7 @@ contract NFT is ERC1155 {
         emit WithdrawMoney(_withdrawAddress, _amount);
     }
 
-    function setNftPrice(uint _newNftPrice) public {
+    function setNftPrice(uint _newNftPrice) public onlyOwner() {
         nftPrice = _newNftPrice;
     }
 
