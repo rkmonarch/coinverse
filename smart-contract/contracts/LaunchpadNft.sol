@@ -30,12 +30,13 @@ contract LaunchPadNft {
         uint nftPrice;
         address launchPadNftAddress;
         address creator;
+        address nftAddress;
     }
 
     /**
      * @notice searching the struct data of NFT and LaunchPadNft using owner address
      */
-    mapping(address => NftStruct) public allNftData;
+    mapping(address => NftStruct[]) public allNftData;
 
     // creator address to check the addresses of nft created
     // creator => NFT addresses
@@ -85,13 +86,14 @@ contract LaunchPadNft {
         emit CreateNewNft(_uri, _maxSupply, _nftPrice, address(this), _creatorAddress);
 
         // Add the new NFT to the mapping
-        allNftData[_creatorAddress] = (
+        allNftData[_creatorAddress].push(
             NftStruct(
                 _uri,
                 _maxSupply,
                 _nftPrice,
                 address(this),
-                _creatorAddress
+                _creatorAddress,
+                address(nft)
             )
         );
         
@@ -109,10 +111,6 @@ contract LaunchPadNft {
 
     // function to withdraw the funds from Launchpad contract
     function withdraw(uint256 _amount, address _receiver) external payable onlyOwner{
-        if(msg.sender != launchPadNftOwner){
-            revert ONLY_OWNER_CAN_CALL();
-        }
-       
         if(address(this).balance < _amount){
             revert NOT_ENOUGH_BALANCE();
         }
